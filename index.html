@@ -112,6 +112,10 @@
             min-height: 300px;
         }
 
+        #output.error {
+            color: #ff6b6b;
+        }
+
         .button-group {
             display: flex;
             gap: 10px;
@@ -271,12 +275,13 @@ print(5 + 3)
                 
                 pyodide = await loadPyodide();
                 
-                // Set up output redirection
+                // Set up output and error redirection
                 pyodide.runPython(`
 import sys
 from io import StringIO
 
 _output_buffer = []
+_error_buffer = []
 
 class CaptureOutput:
     def write(self, text):
@@ -285,8 +290,15 @@ class CaptureOutput:
     def flush(self):
         pass
 
+class CaptureError:
+    def write(self, text):
+        _error_buffer.append(text)
+    
+    def flush(self):
+        pass
+
 sys.stdout = CaptureOutput()
-sys.stderr = CaptureOutput()
+sys.stderr = CaptureError()
                 `);
                 
                 statusDiv.className = "status ready";
@@ -312,31 +324,43 @@ sys.stderr = CaptureOutput()
             try {
                 runBtn.disabled = true;
                 outputDiv.textContent = "Running...";
+                outputDiv.classList.remove("error");
                 
-                // Clear the output buffer
+                // Clear the output and error buffers
                 pyodide.runPython("_output_buffer.clear()");
+                pyodide.runPython("_error_buffer.clear()");
                 
                 // Run the user code
                 await pyodide.runPythonAsync(code);
                 
-                // Get the captured output
+                // Get the captured output and errors
                 const output = pyodide.runPython("''.join(_output_buffer)");
+                const errors = pyodide.runPython("''.join(_error_buffer)");
                 
-                if (output) {
-                    outputDiv.textContent = output;
+                let result = "";
+                if (errors) {
+                    result = errors;
+                    outputDiv.classList.add("error");
+                } else if (output) {
+                    result = output;
+                    outputDiv.classList.remove("error");
                 } else {
-                    outputDiv.textContent = "(Program ran with no output)";
+                    result = "(Program ran with no output)";
+                    outputDiv.classList.remove("error");
                 }
                 
+                outputDiv.textContent = result;
                 runBtn.disabled = false;
             } catch (error) {
                 outputDiv.textContent = "❌ Error:\n" + error.message;
+                outputDiv.classList.add("error");
                 runBtn.disabled = false;
             }
         }
 
         function clearOutput() {
             document.getElementById("output").textContent = "";
+            document.getElementById("output").classList.remove("error");
         }
 
         // Initialize Pyodide when the page loads
