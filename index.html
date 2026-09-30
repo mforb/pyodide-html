@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pyodide Python Class</title>
+    <title>Python Coding Environment</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
     <style>
         * {
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 10px;
@@ -30,15 +30,35 @@
 
         h1 {
             color: #333;
-            margin-bottom: 10px;
-            text-align: center;
+            margin-bottom: 5px;
+            font-size: 28px;
         }
 
         .subtitle {
-            text-align: center;
-            color: #666;
+            color: #999;
             margin-bottom: 30px;
             font-size: 14px;
+        }
+
+        .instructions {
+            background-color: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .instructions p {
+            color: #555;
+            margin-bottom: 5px;
         }
 
         .editor-section {
@@ -57,23 +77,25 @@
             font-size: 16px;
             color: #333;
             margin-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 8px;
+            font-weight: 600;
         }
 
         textarea {
             flex: 1;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 2px solid #e0e0e0;
             border-radius: 5px;
             font-family: 'Courier New', monospace;
-            font-size: 13px;
+            font-size: 14px;
             resize: none;
             min-height: 300px;
+            background-color: #f9f9f9;
         }
 
-        #code {
-            background-color: #f9f9f9;
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         #output {
@@ -83,10 +105,11 @@
             border-radius: 5px;
             overflow-y: auto;
             font-family: 'Courier New', monospace;
-            font-size: 13px;
-            border: 1px solid #333;
+            font-size: 14px;
+            border: 2px solid #e0e0e0;
             white-space: pre-wrap;
             word-wrap: break-word;
+            min-height: 300px;
         }
 
         .button-group {
@@ -97,8 +120,8 @@
         }
 
         button {
-            padding: 12px 24px;
-            font-size: 14px;
+            padding: 12px 28px;
+            font-size: 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -109,6 +132,7 @@
         #runBtn {
             background-color: #667eea;
             color: white;
+            min-width: 120px;
         }
 
         #runBtn:hover:not(:disabled) {
@@ -118,7 +142,7 @@
         }
 
         #runBtn:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
@@ -133,10 +157,11 @@
 
         .status {
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             border-radius: 5px;
             margin-bottom: 20px;
             font-weight: 500;
+            font-size: 14px;
             display: none;
         }
 
@@ -158,12 +183,36 @@
             display: block;
         }
 
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(133, 64, 4, 0.3);
+            border-radius: 50%;
+            border-top-color: #856404;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             .editor-section {
                 grid-template-columns: 1fr;
             }
 
-            textarea {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            textarea, #output {
                 min-height: 200px;
             }
         }
@@ -171,24 +220,41 @@
 </head>
 <body>
     <div class="container">
-        <h1>🐍 Pyodide Python Class</h1>
-        <p class="subtitle">Run Python code directly in your browser</p>
+        <h1>🐍 Python Code Environment</h1>
+        <p class="subtitle">Learn and practice Python programming</p>
 
-        <div id="status" class="status loading">Initializing Pyodide... (this may take a moment on first load)</div>
+        <div class="instructions">
+            <h3>📝 How to Use:</h3>
+            <p><strong>1. Write Python code</strong> in the left box (see example below)</p>
+            <p><strong>2. Click "Run Code"</strong> to execute your program</p>
+            <p><strong>3. View results</strong> in the right box</p>
+            <p><strong>💡 Tip:</strong> Use <code>#</code> to write comments. Lines starting with <code>#</code> are notes for humans, not code!</p>
+        </div>
+
+        <div id="status" class="status loading"><span class="spinner"></span>Loading Python environment...</div>
 
         <div class="button-group">
-            <button id="runBtn" onclick="runCode()" disabled>Run Code</button>
-            <button id="clearBtn" onclick="clearOutput()">Clear Output</button>
+            <button id="runBtn" onclick="runCode()" disabled>▶ Run Code</button>
+            <button id="clearBtn" onclick="clearOutput()">🗑️ Clear Output</button>
         </div>
 
         <div class="editor-section">
             <div class="section">
-                <h2>Python Code Editor</h2>
-                <textarea id="code" placeholder="Write your Python code here...&#10;&#10;Example:&#10;print('Hello, World!')&#10;x = 5 + 3&#10;print(f'5 + 3 = {x}')">print('Hello from Pyodide!')
-</textarea>
+                <h2>Your Python Code:</h2>
+                <textarea id="code"># This is a comment - it explains what the code does!
+# Comments start with a # symbol
+
+# Print "Hello World" to the screen
+print("Hello, World!")
+
+# You can also print numbers
+print(5 + 3)
+
+# Try changing the text in the quotes above!
+# Then click "Run Code" to see what happens</textarea>
             </div>
             <div class="section">
-                <h2>Output</h2>
+                <h2>Output:</h2>
                 <div id="output"></div>
             </div>
         </div>
@@ -196,12 +262,12 @@
 
     <script>
         let pyodide;
-        let outputBuffer = "";
 
         async function initPyodide() {
             try {
-                document.getElementById("status").className = "status loading";
-                document.getElementById("status").textContent = "Initializing Pyodide... (this may take a moment on first load)";
+                const statusDiv = document.getElementById("status");
+                statusDiv.className = "status loading";
+                statusDiv.innerHTML = '<span class="spinner"></span>Loading Python environment...';
                 
                 pyodide = await loadPyodide();
                 
@@ -210,45 +276,42 @@
 import sys
 from io import StringIO
 
-class OutputCapture(StringIO):
-    def __init__(self, callback):
-        super().__init__()
-        self.callback = callback
-    
-    def write(self, text):
-        self.callback(text)
-        return super().write(text)
-
 _output_buffer = []
 
-def _capture_output(text):
-    _output_buffer.append(text)
+class CaptureOutput:
+    def write(self, text):
+        _output_buffer.append(text)
+    
+    def flush(self):
+        pass
 
-sys.stdout = OutputCapture(_capture_output)
-sys.stderr = OutputCapture(_capture_output)
+sys.stdout = CaptureOutput()
+sys.stderr = CaptureOutput()
                 `);
                 
-                document.getElementById("status").className = "status ready";
-                document.getElementById("status").textContent = "✓ Pyodide is ready! You can now run Python code.";
+                statusDiv.className = "status ready";
+                statusDiv.textContent = "✓ Ready to code! Start typing your Python program.";
                 document.getElementById("runBtn").disabled = false;
             } catch (error) {
-                document.getElementById("status").className = "status error";
-                document.getElementById("status").textContent = "✗ Error initializing Pyodide: " + error.message;
+                const statusDiv = document.getElementById("status");
+                statusDiv.className = "status error";
+                statusDiv.textContent = "❌ Error loading Python: " + error.message;
             }
         }
 
         async function runCode() {
             const code = document.getElementById("code").value;
             const outputDiv = document.getElementById("output");
+            const runBtn = document.getElementById("runBtn");
 
             if (!pyodide) {
-                outputDiv.textContent = "Pyodide is not initialized yet. Please wait...";
+                outputDiv.textContent = "Python environment is still loading. Please wait...";
                 return;
             }
 
             try {
-                document.getElementById("runBtn").disabled = true;
-                outputDiv.textContent = "Running...\n";
+                runBtn.disabled = true;
+                outputDiv.textContent = "Running...";
                 
                 // Clear the output buffer
                 pyodide.runPython("_output_buffer.clear()");
@@ -262,13 +325,13 @@ sys.stderr = OutputCapture(_capture_output)
                 if (output) {
                     outputDiv.textContent = output;
                 } else {
-                    outputDiv.textContent = "(Code ran with no output)";
+                    outputDiv.textContent = "(Program ran with no output)";
                 }
                 
-                document.getElementById("runBtn").disabled = false;
+                runBtn.disabled = false;
             } catch (error) {
-                outputDiv.textContent = "Error:\n" + error.message;
-                document.getElementById("runBtn").disabled = false;
+                outputDiv.textContent = "❌ Error:\n" + error.message;
+                runBtn.disabled = false;
             }
         }
 
