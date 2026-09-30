@@ -40,7 +40,6 @@
 <script>
   let pyodide;
   let editor;
-  let outputBuffer = [];
 
   async function init() {
     // 1. Initialize Code Editor
@@ -56,14 +55,11 @@
     if (urlParams.has('code')) {
       const rawParam = urlParams.get('code');
       try {
-        // Try Base64 decoding first
         initialCode = atob(rawParam);
       } catch (e) {
-        // Fall back to plain URL decoding
         initialCode = rawParam;
       }
     } else if (urlParams.has('file')) {
-      // Fetch code from remote .py file URL
       try {
         const response = await fetch(urlParams.get('file'));
         initialCode = await response.text();
@@ -71,42 +67,15 @@
         initialCode = "# Error loading remote script file.";
       }
     } else {
-      // Default placeholder code
-      initialCode = "# Write your Python code here\nname = input('Enter your name: ')\nprint(f'Hello, {name}!')";
+      initialCode = "# Write your Python code here\nprint('Hello, World!')";
     }
 
     editor.setValue(initialCode, -1);
 
-    // 3. Load Pyodide WASM Engine
+    // 3. Load Pyodide - minimal initialization
     try {
       pyodide = await loadPyodide();
-
-      // Set up Python environment with custom print and input functions
-      pyodide.runPython(`
-import sys
-import builtins
-
-# Custom print that captures output
-_output_lines = []
-
-def custom_print(*args, **kwargs):
-    sep = kwargs.get('sep', ' ')
-    end = kwargs.get('end', '\\n')
-    text = sep.join(str(arg) for arg in args) + end
-    _output_lines.append(text)
-
-# Custom input that prompts the user
-def custom_input(prompt=''):
-    import js
-    result = js.window.prompt(prompt if prompt else '')
-    if result is None:
-        result = ''
-    return result
-
-builtins.print = custom_print
-builtins.input = custom_input
-      `);
-
+      
       document.getElementById('run-btn').disabled = false;
       document.getElementById('run-btn').innerText = "Run Code (Ctrl+Enter)";
       document.getElementById('status').innerText = "Pyodide Ready";
@@ -129,24 +98,31 @@ builtins.input = custom_input
     outputElem.classList.remove('error');
     const code = editor.getValue();
 
+    if (!pyodide) {
+      outputElem.textContent = 'Pyodide is not ready yet.';
+      return;
+    }
+
     try {
-      // Clear output buffer
-      pyodide.runPython("_output_lines.clear()");
-      
-      // Run user code
-      let result = await pyodide.runPythonAsync(code);
-      
-      // Get captured output
-      const output = pyodide.runPython("''.join(_output_lines)");
-      
-      // Display output
-      if (output) {
-        outputElem.textContent = output;
-      } else if (result !== undefined && result !== null) {
-        outputElem.textContent = String(result);
-      } else {
-        outputElem.textContent = "(Code executed with no output)";
-      }
+      // Run the code and capture output via stdout redirection
+      const output = await pyodide.runPythonAsync(`
+import sys
+from io import StringIO
+
+# Capture stdout
+old_stdout = sys.stdout
+sys.stdout = StringIO()
+
+try:
+    exec("""${code.replace(/"/g, '\\"').replace(/\n/g, '\\n')}""")
+    result = sys.stdout.getvalue()
+finally:
+    sys.stdout = old_stdout
+
+result
+      `);
+
+      outputElem.textContent = output || "(Code executed with no output)";
     } catch (err) {
       outputElem.classList.add('error');
       outputElem.textContent = `Error:\n${err.message}`;
