@@ -42,13 +42,11 @@
   let editor;
 
   async function init() {
-    // 1. Initialize Code Editor
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/chrome");
     editor.session.setMode("ace/mode/python");
     editor.setShowPrintMargin(false);
 
-    // 2. Extract code from URL parameters (?code= or ?file=)
     const urlParams = new URLSearchParams(window.location.search);
     let initialCode = "";
 
@@ -72,10 +70,8 @@
 
     editor.setValue(initialCode, -1);
 
-    // 3. Load Pyodide - minimal initialization
     try {
       pyodide = await loadPyodide();
-      
       document.getElementById('run-btn').disabled = false;
       document.getElementById('run-btn').innerText = "Run Code (Ctrl+Enter)";
       document.getElementById('status').innerText = "Pyodide Ready";
@@ -84,7 +80,6 @@
       console.error(err);
     }
 
-    // Keyboard shortcut: Ctrl+Enter or Cmd+Enter to run code
     editor.commands.addCommand({
       name: 'runCode',
       bindKey: {win: 'Ctrl-Enter', mac: 'Command-Enter'},
@@ -104,28 +99,27 @@
     }
 
     try {
-      // Run the code and capture output via stdout redirection
       const output = await pyodide.runPythonAsync(`
 import sys
 from io import StringIO
 
-# Capture stdout
 old_stdout = sys.stdout
-sys.stdout = StringIO()
+stdout_buffer = StringIO()
+sys.stdout = stdout_buffer
 
 try:
-    exec("""${code.replace(/"/g, '\\"').replace(/\n/g, '\\n')}""")
-    result = sys.stdout.getvalue()
+    exec(__import__('builtins').compile(${JSON.stringify(code)}, '<user_code>', 'exec'))
+    result = stdout_buffer.getvalue()
 finally:
     sys.stdout = old_stdout
 
 result
       `);
 
-      outputElem.textContent = output || "(Code executed with no output)";
+      outputElem.textContent = output || '(Code executed with no output)';
     } catch (err) {
       outputElem.classList.add('error');
-      outputElem.textContent = `Error:\n${err.message}`;
+      outputElem.textContent = `Error:\n${err.stack || err.message || String(err)}`;
     }
   }
 
