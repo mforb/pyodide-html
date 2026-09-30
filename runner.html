@@ -19,7 +19,8 @@
     button:disabled { background: #6c757d; cursor: not-allowed; }
     #status { font-size: 14px; color: #495057; font-weight: 500; }
     .output-title { margin-top: 10px; margin-bottom: 4px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; }
-    #output { background: #1e1e1e; color: #00ff66; padding: 16px; border-radius: 6px; min-height: 120px; font-family: "Courier New", Courier, monospace; font-size: 14px; white-space: pre-wrap; overflow-x: auto; }
+    #output { background: #1e1e1e; color: #00ff66; padding: 16px; border-radius: 6px; min-height: 120px; font-family: "Courier New", Courier, monospace; font-size: 14px; white-space: pre-wrap; overflow-wrap: break-word; border: 1px solid #444; }
+    #output.error { color: #ff6b6b; }
   </style>
 </head>
 <body>
@@ -79,13 +80,23 @@
     try {
       pyodide = await loadPyodide();
 
-      // Intercept standard input() to use browser prompt dialogs
-      pyodide.setStdin({
-        stdin: () => {
-          const result = window.prompt("Python input requested:");
-          return result !== null ? result : "";
-        }
-      });
+      // Set up input handling with proper queue
+      window.inputQueue = [];
+      
+      // Override Python's input() function to use browser prompt
+      pyodide.runPython(`
+import sys
+import builtins
+
+_original_input = builtins.input
+
+def _custom_input(prompt=""):
+    import js
+    result = js.window.prompt(prompt if prompt else "")
+    return result if result is not None else ""
+
+builtins.input = _custom_input
+      `);
 
       document.getElementById('run-btn').disabled = false;
       document.getElementById('run-btn').innerText = "Run Code (Ctrl+Enter)";
@@ -106,11 +117,15 @@
   async function runPython() {
     const outputElem = document.getElementById('output');
     outputElem.textContent = '';
+    outputElem.classList.remove('error');
     const code = editor.getValue();
 
     // Redirect print() statements to the HTML output box
     pyodide.setStdout({ write: (text) => { outputElem.textContent += text; } });
-    pyodide.setStderr({ write: (text) => { outputElem.textContent += text; } });
+    pyodide.setStderr({ write: (text) => { 
+      outputElem.classList.add('error');
+      outputElem.textContent += text; 
+    } });
 
     try {
       let result = await pyodide.runPythonAsync(code);
@@ -118,6 +133,7 @@
         outputElem.textContent += `\n[Result: ${result}]`;
       }
     } catch (err) {
+      outputElem.classList.add('error');
       outputElem.textContent += `\nRuntime Error:\n${err.message}`;
     }
   }
