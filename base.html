@@ -27,6 +27,8 @@
     .status-row { display: flex; justify-content: space-between; font-size: 14px; color: #495057; }
     #save-status { color: #198754; }
     #plots { overflow-x: auto; }
+    .data-row { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #495057; }
+    #data-files { font-size: 13px; color: #6c757d; }
   </style>
 </head>
 <body>
@@ -43,7 +45,11 @@
     <span id="status">Initializing Pyodide WebAssembly runtime...</span>
     <span id="save-status"></span>
   </div>
-
+  <div class="data-row">
+    <label for="data-file">Add data file(s):</label>
+    <input id="data-file" type="file" accept=".csv,.tsv,.txt,.dat" multiple>
+  </div>
+  <div id="data-files"></div>
   <div class="output-title">Console Output</div>
   <pre id="output">System ready.</pre>
 
@@ -114,6 +120,36 @@
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
+  
+  const loadedFiles = [];
+
+  function listFiles() {
+    document.getElementById('data-files').textContent = loadedFiles.length
+      ? 'Files available to Python: ' + loadedFiles.join(', ')
+      : 'No data files loaded.';
+  }
+  
+  // Write bytes into Pyodide's virtual file system, in Python's working directory
+  function addFileToPyodide(name, bytes) {
+    const dir = pyodide.runPython('import os; os.getcwd()');
+    pyodide.FS.writeFile(`${dir}/${name}`, bytes);
+    if (!loadedFiles.includes(name)) loadedFiles.push(name);
+    listFiles();
+  }
+  
+  async function handleFileUpload(event) {
+    if (!pyodide) {
+      alert('Python is still loading. Try again in a moment.');
+      event.target.value = '';
+      return;
+    }
+    for (const file of event.target.files) {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const safeName = file.name.replace(/[^\w.\-]+/g, '_');   // spaces etc. become _
+      addFileToPyodide(safeName, bytes);
+    }
+    event.target.value = '';   // lets the same file be chosen again after editing it
+  }
 
   async function init() {
     editor = ace.edit("editor");
@@ -153,7 +189,9 @@
     
     // Tell Pyodide's matplotlib where to draw figures
     document.pyodideMplTarget = document.getElementById('plots');
-
+    document.getElementById('data-file').addEventListener('change', handleFileUpload);
+    listFiles();
+    
     try {
       pyodide = await loadPyodide();
       document.getElementById('run-btn').disabled = false;
