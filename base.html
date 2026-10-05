@@ -20,7 +20,13 @@
     #status { font-size: 14px; color: #495057; font-weight: 500; }
     .output-title { margin-top: 10px; margin-bottom: 4px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; }
     #output { background: #1e1e1e; color: #00ff66; padding: 16px; border-radius: 6px; min-height: 120px; font-family: "Courier New", Courier, monospace; font-size: 14px; white-space: pre-wrap; overflow-wrap: break-word; border: 1px solid #444; }
-    #output.error { color: #ff6b6b; }
+    #output { max-height: 320px; overflow-y: auto; }   /* add these two properties to your existing #output rule */
+    #output:empty::before { content: 'Console is empty. Run some code!'; color: #888; }
+    .run-header { color: #8ab4f8; font-weight: bold; border-top: 1px solid #444; margin-top: 10px; padding-top: 8px; }
+    .run-header:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+    .run-error { color: #ff6b6b; }
+    .output-header { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; }
+    button.small { padding: 4px 12px; font-size: 13px; }
     button.secondary { background: #6c757d; font-weight: normal; padding: 10px 16px; }
     button.secondary:hover { background: #5c636a; }
     #filename { padding: 9px 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 6px; }
@@ -39,7 +45,7 @@
     <button id="run-btn" onclick="runPython()" disabled>Loading Python...</button>
     <button id="save-btn" class="secondary" onclick="downloadPy()">Save as .py</button>
     <input id="filename" type="text" value="my_script" aria-label="File name" size="14">
-    <button id="reset-btn" class="secondary" onclick="resetCode()">Reset</button>
+    <button id="reset-btn" class="secondary" onclick="resetCode()">Reset code</button>
   </div>
   <div class="status-row">
     <span id="status">Initializing Pyodide WebAssembly runtime...</span>
@@ -50,8 +56,11 @@
     <input id="data-file" type="file" accept=".csv,.tsv,.txt,.dat" multiple>
   </div>
   <div id="data-files"></div>
-  <div class="output-title">Console Output</div>
-  <pre id="output">System ready.</pre>
+  <div class="output-header">
+    <div class="output-title">Console Output <span id="run-count"></span></div>
+    <button class="secondary small" onclick="clearConsole()">Clear console</button>
+  </div>
+  <pre id="output"></pre>
 
   <div class="output-title">Plots</div>
   <div id="plots"></div>
@@ -64,6 +73,36 @@
   let starterCode = '';
   let storageKey = '';
   let saveTimer;
+
+  let runCount = 0;
+  
+  function appendRun(text, isError) {
+    const out = document.getElementById('output');
+  
+    const header = document.createElement('div');
+    header.className = 'run-header';
+    header.textContent = `Run #${runCount}  ·  ${new Date().toLocaleTimeString()}`;
+  
+    const body = document.createElement('div');
+    if (isError) body.className = 'run-error';
+    body.textContent = text.replace(/\n+$/, '');      // drop trailing blank lines
+  
+    out.appendChild(header);
+    out.appendChild(body);
+  
+    while (out.children.length > 100) out.removeChild(out.firstChild);  // keep at most 50 runs
+    out.scrollTop = out.scrollHeight;                                    // jump to newest output
+  
+    document.getElementById('run-count').textContent =
+      `(${runCount} run${runCount === 1 ? '' : 's'})`;
+  }
+  
+  function clearConsole() {
+    runCount = 0;
+    document.getElementById('output').innerHTML = '';
+    document.getElementById('run-count').textContent = '';
+    document.getElementById('plots').innerHTML = '';
+  }
   
   // Tiny hash so a long ?code= value doesn't become a giant storage key
   function hashString(s) {
@@ -214,29 +253,25 @@
     });
   }
   async function runPython() {
-    const outputElem = document.getElementById('output');
     const plotsElem = document.getElementById('plots');
     const statusElem = document.getElementById('status');
     const runBtn = document.getElementById('run-btn');
   
-    outputElem.textContent = '';
-    outputElem.classList.remove('error');
-    plotsElem.innerHTML = '';            // clear figures from the previous run
-    const code = editor.getValue();
-  
     if (!pyodide) {
-      outputElem.textContent = 'Pyodide is not ready yet.';
+      statusElem.innerText = 'Pyodide is not ready yet.';
       return;
     }
   
+    runCount++;                // count every run, including ones that end in an error
+    plotsElem.innerHTML = '';  // plots still show only the latest run (see note below)
+    const code = editor.getValue();
+  
     runBtn.disabled = true;
     try {
-      // 1. Download any Pyodide packages the code imports (numpy, matplotlib, ...)
       statusElem.innerText = 'Checking libraries (first use can take a while)...';
       await pyodide.loadPackagesFromImports(code);
       statusElem.innerText = 'Running...';
   
-      // 2. Pass the code into Python as a variable instead of pasting it into a string
       pyodide.globals.set('user_code', code);
   
       const output = await pyodide.runPythonAsync(`
@@ -255,16 +290,15 @@
   stdout_buffer.getvalue()
       `);
   
-      outputElem.textContent = output || '(Code executed with no output)';
+      appendRun(output || '(Code executed with no output)', false);
     } catch (err) {
-      outputElem.classList.add('error');
-      outputElem.textContent = `Error:\n${err.stack || err.message || String(err)}`;
+      appendRun(`Error:\n${err.stack || err.message || String(err)}`, true);
     } finally {
       runBtn.disabled = false;
       statusElem.innerText = 'Pyodide Ready';
     }
   }
-  
+    
 
   window.onload = init;
 </script>
