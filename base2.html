@@ -301,31 +301,46 @@
       pyodide.globals.set('run_limit', RUN_TIMEOUT_SECONDS);
   
       const output = await pyodide.runPythonAsync(`
-  import sys, io, time
-
+  import sys, io, time, builtins
+  from js import prompt as js_prompt
+  
   class RunTimeout(BaseException):
       pass
   
+  deadline = [0.0]                      # a list, so input() can push the deadline back
+  
   def make_tracer(limit):
-      deadline = time.time() + limit
+      deadline[0] = time.time() + limit
       def tracer(frame, event, arg):
-          if time.time() > deadline:
+          if time.time() > deadline[0]:
               raise RunTimeout(f'Your code was stopped after {limit} seconds. Is there an infinite loop?')
           if frame.f_code.co_filename == '<user_code>':
               return tracer          # check on every line of the student's own code
           return None                # don't line-trace inside libraries (much faster)
       return tracer
   
+  def student_input(message=''):
+      message = str(message)
+      started = time.time()
+      reply = js_prompt(message or 'Python is asking for input:')
+      deadline[0] += time.time() - started        # time spent typing doesn't count
+      if reply is None:                           # the student pressed Cancel
+          raise KeyboardInterrupt('Input cancelled')
+      print(message + reply)                      # echo it into the console output
+      return reply
+  
+  original_input = builtins.input
+  builtins.input = student_input
+  
   old_stdout = sys.stdout
   sys.stdout = stdout_buffer = io.StringIO()
   
   try:
-      if 'matplotlib.pyplot' in sys.modules:
-          sys.modules['matplotlib.pyplot'].close('all')
       sys.settrace(make_tracer(run_limit))
       exec(compile(user_code, '<user_code>', 'exec'), {'__name__': '__main__'})
   finally:
       sys.settrace(None)
+      builtins.input = original_input
       sys.stdout = old_stdout
   
   stdout_buffer.getvalue()
