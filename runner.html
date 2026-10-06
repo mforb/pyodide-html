@@ -34,7 +34,6 @@
     button.small { padding: 4px 12px; font-size: 13px; }
     button.secondary { background: #6c757d; font-weight: normal; padding: 10px 16px; }
     button.secondary:hover { background: #5c636a; }
-    #filename { padding: 9px 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 6px; }
     #save-status { color: #198754; }
   </style>
 </head>
@@ -45,8 +44,6 @@
 
   <div class="controls">
     <button id="run-btn" onclick="runPython()" disabled>Loading Python...</button>
-    <button id="save-btn" class="secondary" onclick="downloadPy()">Save as .py</button>
-    <input id="filename" type="text" value="my_script" aria-label="File name" size="14">
     <button id="reset-btn" class="secondary" onclick="resetCode()">Reset code</button>
     <span id="save-status"></span>
     <span id="status">Initializing Pyodide WebAssembly runtime...</span>
@@ -127,7 +124,7 @@
       localStorage.setItem(storageKey, editor.getValue());
       el.textContent = 'Saved ' + new Date().toLocaleTimeString();
     } catch (e) {
-      el.textContent = 'Auto-save unavailable: use Save as .py';
+      el.textContent = 'Auto-save unavailable';
     }
   }
 
@@ -141,21 +138,6 @@
       editor.setValue(starterCode, -1);
       saveNow();
     }
-  }
-
-  function downloadPy() {
-    let name = document.getElementById('filename').value.trim() || 'my_script';
-    name = name.replace(/\.py$/i, '').replace(/[^\w\-]+/g, '_') + '.py';
-
-    const blob = new Blob([editor.getValue()], { type: 'text/x-python;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   async function init() {
@@ -207,11 +189,6 @@
       name: 'runCode',
       bindKey: {win: 'Ctrl-Enter', mac: 'Command-Enter'},
       exec: function() { runPython(); }
-    });
-    editor.commands.addCommand({
-      name: 'savePy',
-      bindKey: {win: 'Ctrl-S', mac: 'Command-S'},
-      exec: function() { downloadPy(); }
     });
   }
 
