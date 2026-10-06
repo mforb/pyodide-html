@@ -16,11 +16,10 @@
     .left-panel { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 400px; }
     .right-panel { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 350px; }
     #editor { height: 320px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-    .controls { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
     button { padding: 10px 24px; font-size: 15px; font-weight: bold; background: #0d6efd; color: white; border: none; border-radius: 6px; cursor: pointer; }
     button:hover { background: #0b5ed7; }
     button:disabled { background: #6c757d; cursor: not-allowed; }
-    #status { font-size: 14px; color: #495057; font-weight: 500; }
+    #status { font-size: 11px; color: #adb5bd; font-weight: normal; }
     .output-title { margin-top: 10px; margin-bottom: 4px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; }
     #output { background: #1e1e1e; color: #00ff66; padding: 16px; border-radius: 6px; min-height: 120px; font-family: "Courier New", Courier, monospace; font-size: 14px; white-space: pre-wrap; word-wrap: break-word; }
     #output { max-height: 280px; overflow-y: auto; }
@@ -28,18 +27,21 @@
     .run-header { color: #8ab4f8; font-weight: bold; border-top: 1px solid #444; margin-top: 10px; padding-top: 8px; }
     .run-header:first-child { border-top: none; margin-top: 0; padding-top: 0; }
     .run-error { color: #ff6b6b; }
-    .output-header { display: flex; justify-content: space-between; align-items: flex-end; }
     button.small { padding: 4px 12px; font-size: 13px; }
     button.secondary { background: #6c757d; font-weight: normal; padding: 10px 16px; }
     button.secondary:hover { background: #5c636a; }
     #filename { padding: 9px 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 6px; }
-    .status-row { display: flex; justify-content: space-between; font-size: 14px; color: #495057; }
     #save-status { color: #198754; }
     #plots { overflow-x: auto; flex: 1; min-height: 150px; }
     .data-row { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #495057; }
     #data-files { font-size: 13px; color: #6c757d; }
     .plots-section { flex: 1; display: flex; flex-direction: column; min-height: 200px; }
-    .footer { font-size: 12px; color: #adb5bd; text-align: center; }
+    .footer { font-size: 11px; color: #adb5bd; text-align: right; }
+    .button-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    #save-status { margin-left: auto; font-size: 12px; }          /* pushes "Saved…" to the right edge */
+    #run-count { text-transform: none; letter-spacing: 0; }       /* "(3 runs)" instead of "(3 RUNS)" */
+    .main-layout .output-title { margin-top: 0; }                 /* both panel titles line up at the top */
+    .bottom-bar { border-top: 1px solid #dee2e6; padding-top: 10px; display: flex; flex-direction: column; gap: 6px; }
   </style>
 </head>
 <body>
@@ -286,6 +288,7 @@
     const code = editor.getValue();
   
     runBtn.disabled = true;
+    runBtn.innerText = 'Running...';
     try {
       statusElem.innerText = 'Checking libraries (first use can take a while)...';
       await pyodide.loadPackagesFromImports(code);
@@ -314,7 +317,8 @@
       appendRun(`Error:\n${err.stack || err.message || String(err)}`, true);
     } finally {
       runBtn.disabled = false;
-      statusElem.innerText = 'Pyodide Ready';
+      runBtn.innerText = 'Run Code (Ctrl+Enter)';
+      statusElem.innerText = 'Pyodide ' + pyodide.version + ' ready';
     }
   }
     
