@@ -243,25 +243,27 @@
     runBtn.disabled = true;
     document.getElementById('input-container').innerHTML = '';
 
-    let interruptBuffer = null;
     let watchdog = null;
+    let runFinished = false;
 
     try {
       statusElem.innerText = 'Checking libraries (first use can take a while)...';
       await pyodide.loadPackagesFromImports(code);
       statusElem.innerText = 'Running...';
 
-      interruptBuffer = new Int32Array(new SharedArrayBuffer(4));
-      pyodide.setInterruptBuffer(interruptBuffer);
-
-      watchdog = setTimeout(() => {
-        if (interruptBuffer) interruptBuffer[0] = 2;
-      }, MAX_RUN_SECONDS);
+      watchdog = new AbortController();
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+          if (!runFinished) {
+            reject(new Error('Program exceeded maximum runtime of ' + MAX_RUN_SECONDS + 'ms'));
+          }
+        }, MAX_RUN_SECONDS);
+      });
 
       pyodide.globals.set('user_code', code);
       pyodide.globals.set('js_prompt_input', promptInput);
 
-      const output = await pyodide.runPythonAsync(`
+      const runPromise = pyodide.runPythonAsync(`
 import sys, io, asyncio
 
 old_stdout = sys.stdout
@@ -284,17 +286,15 @@ finally:
 stdout_buffer.getvalue()
       `);
 
+      const output = await Promise.race([runPromise, timeoutPromise]);
+      runFinished = true;
+
       appendRun(output || '(Code executed with no output)', false);
     } catch (err) {
-      const msg = err && (err.stack || err.message || String(err));
-      if (msg && /KeyboardInterrupt|timeout|interrupt/i.test(msg)) {
-        appendRun('Error:\nProgram stopped after exceeding the maximum allowed runtime. This usually means the code contains an infinite loop or is taking too long.', true);
-      } else {
-        appendRun(`Error:\n${msg}`, true);
-      }
+      runFinished = true;
+      const msg = err && (err.message || String(err));
+      appendRun(`Error:\n${msg}`, true);
     } finally {
-      if (watchdog) clearTimeout(watchdog);
-      if (pyodide) pyodide.setInterruptBuffer(null);
       runBtn.disabled = false;
       statusElem.innerText = 'Pyodide Ready';
     }
