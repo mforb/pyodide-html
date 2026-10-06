@@ -337,6 +337,8 @@
   
   try:
       sys.settrace(make_tracer(run_limit))
+      if 'matplotlib.pyplot' in sys.modules:
+        sys.modules['matplotlib.pyplot'].close('all')
       exec(compile(user_code, '<user_code>', 'exec'), {'__name__': '__main__'})
   finally:
       sys.settrace(None)
