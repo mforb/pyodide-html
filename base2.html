@@ -45,42 +45,45 @@
 <body>
 
 <div class="container">
-  <div class="controls">
-    <button id="run-btn" onclick="runPython()" disabled>Loading Python...</button>
-    <button id="save-btn" class="secondary" onclick="downloadPy()">Save as .py</button>
-    <input id="filename" type="text" value="my_script" aria-label="File name" size="14">
-    <button id="reset-btn" class="secondary" onclick="resetCode()">Reset code</button>
-  </div>
-  <div class="status-row">
-    <span id="status">Initializing Pyodide WebAssembly runtime...</span>
-    <span id="save-status"></span>
-  </div>
-  <div class="data-row">
-    <label for="data-file">Add data file(s):</label>
-    <input id="data-file" type="file" accept=".csv,.tsv,.txt,.dat" multiple>
-  </div>
-  <div id="data-files"></div>
 
   <div class="main-layout">
+
     <div class="left-panel">
+      <div class="output-title">Code Editor</div>
       <div id="editor"></div>
+      <div class="button-row">
+        <button id="run-btn" onclick="runPython()" disabled>Loading Python...</button>
+        <button id="save-btn" class="secondary" onclick="downloadPy()">Save as .py</button>
+        <input id="filename" type="text" value="my_script" aria-label="File name" size="14">
+        <button id="reset-btn" class="secondary" onclick="resetCode()">Reset code</button>
+        <span id="save-status"></span>
+      </div>
     </div>
-    
+
     <div class="right-panel">
-      <div class="output-header">
-        <div class="output-title">Console Output <span id="run-count"></span></div>
+      <div class="output-title">Console Output <span id="run-count"></span></div>
+      <pre id="output"></pre>
+      <div class="button-row">
         <button class="secondary small" onclick="clearConsole()">Clear console</button>
       </div>
-      <pre id="output"></pre>
 
       <div class="plots-section">
         <div class="output-title">Plots</div>
         <div id="plots"></div>
       </div>
     </div>
+
   </div>
 
-  <div class="footer">runner v1.3 (2026-10-06)</div>
+  <div class="bottom-bar">
+    <div class="data-row">
+      <label for="data-file">Add data file(s):</label>
+      <input id="data-file" type="file" accept=".csv,.tsv,.txt,.dat" multiple>
+    </div>
+    <div id="data-files"></div>
+    <div class="footer"><span id="status">Initializing...</span> · runner v1.4 (2026-10-06)</div>
+  </div>
+
 </div>
 
 <script>
