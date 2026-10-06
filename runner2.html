@@ -24,7 +24,7 @@
     button:disabled { background: #6c757d; cursor: not-allowed; }
     #status { font-size: 14px; color: #495057; font-weight: 500; }
     .output-title { margin-top: 10px; margin-bottom: 4px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; }
-    #output { background: #1e1e1e; color: #00ff66; padding: 16px; border-radius: 6px; min-height: 120px; font-family: "Courier New", Courier, monospace; font-size: 14px; white-space: pre-wrap; overflow-wrap: break-word; }
+    #output { background: #1e1e1e; color: #00ff66; padding: 16px; border-radius: 6px; min-height: 120px; font-family: "Courier New", Courier, monospace; font-size: 14px; white-space: pre-wrap; overflow-y: auto; }
     #output { max-height: 280px; overflow-y: auto; }
     #output:empty::before { content: 'Console is empty. Run some code!'; color: #888; }
     .run-header { color: #8ab4f8; font-weight: bold; border-top: 1px solid #444; margin-top: 10px; padding-top: 8px; }
@@ -70,7 +70,7 @@
   let runCount = 0;
 
   const MAX_OUTPUT_SIZE = 50000;
-  const MAX_RUN_SECONDS = 5000;
+  const RUN_TIMEOUT_SECONDS = 5;
 
   function appendRun(text, isError) {
     const out = document.getElementById('output');
@@ -151,28 +151,28 @@
       const container = document.getElementById('input-container');
       const promptDiv = document.createElement('div');
       promptDiv.className = 'input-prompt';
-      
+
       const label = document.createElement('label');
       label.textContent = promptText;
-      
+
       const input = document.createElement('input');
       input.type = 'text';
-      
+
       promptDiv.appendChild(label);
       promptDiv.appendChild(input);
-      
+
       container.appendChild(promptDiv);
-      
+
       const handleSubmit = () => {
         const value = input.value;
         container.removeChild(promptDiv);
         resolve(value);
       };
-      
+
       input.onkeypress = (e) => {
         if (e.key === 'Enter') handleSubmit();
       };
-      
+
       input.focus();
     });
   }
@@ -243,56 +243,55 @@
     runBtn.disabled = true;
     document.getElementById('input-container').innerHTML = '';
 
-    let watchdog = null;
-    let runFinished = false;
-
     try {
       statusElem.innerText = 'Checking libraries (first use can take a while)...';
       await pyodide.loadPackagesFromImports(code);
       statusElem.innerText = 'Running...';
 
-      watchdog = new AbortController();
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => {
-          if (!runFinished) {
-            reject(new Error('Program exceeded maximum runtime of ' + MAX_RUN_SECONDS + 'ms'));
-          }
-        }, MAX_RUN_SECONDS);
-      });
-
       pyodide.globals.set('user_code', code);
+      pyodide.globals.set('run_limit', RUN_TIMEOUT_SECONDS);
       pyodide.globals.set('js_prompt_input', promptInput);
 
-      const runPromise = pyodide.runPythonAsync(`
-import sys, io, asyncio
+      const output = await pyodide.runPythonAsync(`
+import sys, io, time, asyncio
 
-old_stdout = sys.stdout
-old_stdin = sys.stdin
-sys.stdout = stdout_buffer = io.StringIO()
+class RunTimeout(BaseException):
+    pass
+
+def make_tracer(limit):
+    deadline = time.time() + limit
+    def tracer(frame, event, arg):
+        if time.time() > deadline:
+            raise RunTimeout(f'Your code was stopped after {limit} seconds. Is there an infinite loop?')
+        if frame.f_code.co_filename == '<user_code>':
+            return tracer
+        return None
+    return tracer
 
 class InteractiveInput:
     def readline(self):
         result = asyncio.run(js_prompt_input(''))
-        return result + '\\n'
+        return result + '\n'
 
+old_stdout = sys.stdout
+old_stdin = sys.stdin
+sys.stdout = stdout_buffer = io.StringIO()
 sys.stdin = InteractiveInput()
 
 try:
+    sys.settrace(make_tracer(run_limit))
     exec(compile(user_code, '<user_code>', 'exec'), {'__name__': '__main__'})
 finally:
+    sys.settrace(None)
     sys.stdout = old_stdout
     sys.stdin = old_stdin
 
 stdout_buffer.getvalue()
       `);
 
-      const output = await Promise.race([runPromise, timeoutPromise]);
-      runFinished = true;
-
       appendRun(output || '(Code executed with no output)', false);
     } catch (err) {
-      runFinished = true;
-      const msg = err && (err.message || String(err));
+      const msg = err && (err.stack || err.message || String(err));
       appendRun(`Error:\n${msg}`, true);
     } finally {
       runBtn.disabled = false;
