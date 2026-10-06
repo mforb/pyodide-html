@@ -96,8 +96,11 @@
   let saveTimer;
 
   let runCount = 0;
+  const RUN_TIMEOUT_SECONDS = 10;
   
   function appendRun(text, isError) {
+    const MAX_CHARS = 20000;
+    if (text.length > MAX_CHARS) text = text.slice(0, MAX_CHARS) + '\n... output truncated ...';
     const out = document.getElementById('output');
   
     const header = document.createElement('div');
@@ -295,9 +298,23 @@
       statusElem.innerText = 'Running...';
   
       pyodide.globals.set('user_code', code);
+      pyodide.globals.set('run_limit', RUN_TIMEOUT_SECONDS);
   
       const output = await pyodide.runPythonAsync(`
-  import sys, io
+  import sys, io, time
+
+  class RunTimeout(BaseException):
+      pass
+  
+  def make_tracer(limit):
+      deadline = time.time() + limit
+      def tracer(frame, event, arg):
+          if time.time() > deadline:
+              raise RunTimeout(f'Your code was stopped after {limit} seconds. Is there an infinite loop?')
+          if frame.f_code.co_filename == '<user_code>':
+              return tracer          # check on every line of the student's own code
+          return None                # don't line-trace inside libraries (much faster)
+      return tracer
   
   old_stdout = sys.stdout
   sys.stdout = stdout_buffer = io.StringIO()
@@ -305,8 +322,10 @@
   try:
       if 'matplotlib.pyplot' in sys.modules:
           sys.modules['matplotlib.pyplot'].close('all')
+      sys.settrace(make_tracer(run_limit))
       exec(compile(user_code, '<user_code>', 'exec'), {'__name__': '__main__'})
   finally:
+      sys.settrace(None)
       sys.stdout = old_stdout
   
   stdout_buffer.getvalue()
