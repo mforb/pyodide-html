@@ -1,0 +1,288 @@
+<!--
+MG5001 Python Class 2: Collections and decisions — 12 Moodle text blocks.
+
+Copy each START TASK ... END TASK block into a separate Moodle text/HTML area.
+Each block is independent, apart from your existing section/number counters.
+The script below is an OPTIONAL section header: copy it once only if the
+section does not already initialise those counters. Change 8 to your section.
+For a plain HTML preview, this file can also be opened on GitHub Pages.
+
+Tasks 1–6: first self-paced block. Tasks 7–10: second self-paced block.
+Task 11: everyone’s checkpoint. Task 12: optional extension.
+There are no loops. Allow time to change values, predict, run and compare.
+-->
+<script>
+    var section = 8;
+    var number = 0;
+</script>
+
+<!-- START TASK 1: Reading a list -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Reading a list</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Instructions:</strong> the editor contains eight sensor readings. Print the first reading, the last reading using a negative index, the middle four readings (indices 2 to 5), and all readings from the third item onwards. Use indexing and slicing; do not use a loop.</p>
+<p>Predict the four results before you run your code. Remember: the first index is <code>0</code>, and a slice does not include its stop index.</p>
+<p>Expected output:</p>
+<pre>10
+24
+[14, 16, 18, 20]
+[14, 16, 18, 20, 22, 24]</pre>
+<p><strong>Play around:</strong> add a ninth reading. Which of your four results change? Try <code>readings[:]</code>, <code>readings[:3]</code> and <code>readings[-3:]</code>.</p>
+<p><strong>Think about it:</strong> what would happen if you tried to read <code>readings[8]</code> before adding that ninth item?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F01_readings.py" title="Python editor: reading a list" width="100%" height="600"></iframe>
+<!-- END TASK 1 -->
+
+<!-- START TASK 2: Slicing a sensor label -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Slicing a sensor label</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Instructions:</strong> strings are sequences too. From <code>sensor_id = "TEMP-CAMP-A"</code>, print the first four characters, everything from index 5 onwards, and the last character using a negative index.</p>
+<p>Expected output:</p>
+<pre>TEMP
+CAMP-A
+A</pre>
+<p><strong>Play around:</strong> draw the label with an index under each character. Predict <code>sensor_id[4:5]</code>, <code>sensor_id[:0]</code> and <code>sensor_id[-6:]</code>, then check.</p>
+<p><strong>Think about it:</strong> why does the site name begin at index 5 rather than index 4?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F02_text_slices.py" title="Python editor: slicing a sensor label" width="100%" height="600"></iframe>
+<!-- END TASK 2 -->
+
+<!-- START TASK 3: Editing the readings -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Editing the readings</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Instructions:</strong> start with <code>[10, 12, 14]</code>. In this order:</p>
+<ol>
+    <li>Change the second reading to <code>13</code>.</li>
+    <li>Use <code>append()</code> to add <code>16</code>.</li>
+    <li>Use <code>insert()</code> to put <code>8</code> at the beginning.</li>
+    <li>Use <code>pop()</code> to remove the last item, saving its value in <code>removed</code>.</li>
+    <li>Use <code>remove()</code> to remove the value <code>10</code>.</li>
+</ol>
+<p>Print the list after each step while developing your code. Then print this final report:</p>
+<pre>Removed: 16
+Final readings: [8, 13, 14]</pre>
+<p><strong>Play around:</strong> add another <code>13</code> and try <code>remove(13)</code>. Try <code>pop(0)</code> on a fresh list.</p>
+<p><strong>Think about it:</strong> how is removing an item by its value different from removing it by its position?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F03_edit_list.py" title="Python editor: editing the readings" width="100%" height="600"></iframe>
+<!-- END TASK 3 -->
+
+<!-- START TASK 4: A readings report -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: A readings report</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Instructions:</strong> use <code>sum()</code>, <code>len()</code>, <code>min()</code> and <code>max()</code> to report the eight readings. The mean is the sum divided by the count; the range is the maximum minus the minimum. No loops are needed.</p>
+<p>Use f-strings for the labels and show the mean to one decimal place. Expected output:</p>
+<pre>Count: 8
+Mean: 17.0
+Minimum: 10
+Maximum: 24
+Range: 14</pre>
+<p><strong>Play around:</strong> replace the last reading with <code>100</code>. Predict the new mean and range. Try printing <code>sorted(readings)</code> and then the original list.</p>
+<p><strong>Think about it:</strong> does sorting change the mean? Does <code>sorted()</code> change the stored list?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F04_statistics.py" title="Python editor: a readings report" width="100%" height="600"></iframe>
+<!-- END TASK 4 -->
+
+<!-- START TASK 5: Coordinates in a tuple -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Coordinates in a tuple</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Instructions:</strong> the tuple <code>point = (3.0, 4.0)</code> represents a coordinate in metres. Unpack it into <code>x</code> and <code>y</code>, and calculate the distance from the origin using <code>(x**2 + y**2)**0.5</code>. The power <code>0.5</code> takes a square root.</p>
+<p>Expected output:</p>
+<pre>x: 3.0 m
+y: 4.0 m
+Distance: 5.0 m</pre>
+<p><strong>Play around:</strong> change the tuple to <code>(6.0, 8.0)</code> and predict the distance. Then try <code>point[0] = 6.0</code>, read the error, and remove that line again.</p>
+<p><strong>Think about it:</strong> what does “immutable” mean? How would the assignment behave if <code>point</code> were a list?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F05_tuple.py" title="Python editor: coordinates in a tuple" width="100%" height="600"></iframe>
+<!-- END TASK 5 -->
+
+<!-- START TASK 6: A field-site record -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: A field-site record</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Instructions:</strong> use the dictionary in the editor. Update <code>temp_c</code> to <code>-10.0</code> and add a new key, <code>active</code>, with the value <code>True</code>. Print a summary using dictionary lookups and f-strings. Finally, print the result of <code>"depth_m" in site</code>.</p>
+<p>Expected output:</p>
+<pre>Site: Camp A
+Temperature: -10.0 C
+Depth: 340 m
+Active: True
+Has depth: True</pre>
+<p><strong>Play around:</strong> add a <code>sensor_id</code> field. Check whether <code>"Camp A" in site</code> is True or False, then try a misspelled key and read the error.</p>
+<p><strong>Think about it:</strong> why is a dictionary a better fit than a list for the fields of this record?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F06_site_record.py" title="Python editor: a field-site record" width="100%" height="600"></iframe>
+<!-- END TASK 6 -->
+
+<!-- START TASK 7: A pass or fail check -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: A pass or fail check</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Instructions:</strong> a safety factor passes this exercise’s check when it is at least <code>2.0</code>. Write an <code>if / else</code> statement that prints <code>PASS</code> or <code>FAIL</code>. Remember the colons and four-space indentation.</p>
+<p>Run each test separately and record the expected result before running:</p>
+<table><thead><tr><th>factor</th><th>Expected output</th></tr></thead><tbody>
+    <tr><td>1.8</td><td><code>FAIL</code></td></tr>
+    <tr><td>2.0</td><td><code>PASS</code></td></tr>
+    <tr><td>2.5</td><td><code>PASS</code></td></tr>
+</tbody></table>
+<p><strong>Play around:</strong> change <code>minimum</code> to <code>1.5</code>. Try <code>1.49</code>, <code>1.5</code> and <code>1.51</code>.</p>
+<p><strong>Think about it:</strong> why is a test exactly at the limit important? Which comparison operator includes that value?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F07_pass_fail.py" title="Python editor: a pass or fail check" width="100%" height="600"></iframe>
+<!-- END TASK 7 -->
+
+<!-- START TASK 8: Wind-speed bands -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Wind-speed bands</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Instructions:</strong> use <code>if / elif / else</code> to classify wind speed. For this exercise, print <code>STOP</code> at 20 m/s or above, <code>CAUTION</code> from 10 up to (but not including) 20 m/s, and <code>GO</code> below 10 m/s.</p>
+<p>Check the highest threshold first. Expected outputs, one run at a time:</p>
+<table><thead><tr><th>wind_ms</th><th>Expected output</th></tr></thead><tbody>
+    <tr><td>5</td><td><code>GO</code></td></tr>
+    <tr><td>10</td><td><code>CAUTION</code></td></tr>
+    <tr><td>15</td><td><code>CAUTION</code></td></tr>
+    <tr><td>20</td><td><code>STOP</code></td></tr>
+    <tr><td>25</td><td><code>STOP</code></td></tr>
+</tbody></table>
+<p><strong>Play around:</strong> swap the order of the first two conditions and try 25. Explain what changes, then put the correct order back.</p>
+<p><strong>Think about it:</strong> how many branches of an <code>if / elif / else</code> chain can run on one pass?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F08_wind_bands.py" title="Python editor: wind-speed bands" width="100%" height="600"></iframe>
+<!-- END TASK 8 -->
+
+<!-- START TASK 9: A sensor alarm -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: A sensor alarm</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Instructions:</strong> print <code>ALARM</code> only when the site is active <strong>and</strong> its temperature is outside the allowed range. Otherwise print <code>NO ALARM</code>. Use the limits stored in the dictionary, <code>and</code>, <code>or</code>, and brackets to group the two out-of-range checks.</p>
+<p>The allowed range includes both -20.0 C and 0.0 C. Test these cases separately:</p>
+<table><thead><tr><th>active</th><th>temp_c</th><th>Expected output</th></tr></thead><tbody>
+    <tr><td>True</td><td>-25.0</td><td><code>ALARM</code></td></tr>
+    <tr><td>True</td><td>-20.0</td><td><code>NO ALARM</code></td></tr>
+    <tr><td>True</td><td>0.0</td><td><code>NO ALARM</code></td></tr>
+    <tr><td>True</td><td>2.0</td><td><code>ALARM</code></td></tr>
+    <tr><td>False</td><td>2.0</td><td><code>NO ALARM</code></td></tr>
+</tbody></table>
+<p><strong>Play around:</strong> change the limits in the dictionary and test the new endpoints. What happens if you remove the brackets around your <code>or</code> checks?</p>
+<p><strong>Think about it:</strong> why does an inactive site produce no alarm even if its reading is outside the range?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F09_alarm.py" title="Python editor: a sensor alarm" width="100%" height="600"></iframe>
+<!-- END TASK 9 -->
+
+<!-- START TASK 10: Fix the collection and decision bugs -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Fix the collection and decision bugs</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Instructions:</strong> this program should select the <strong>last reading</strong> and check whether it <strong>equals</strong> the site’s limit. It has <strong>three</strong> mistakes. Run it, read the error from the <strong>last line up</strong>, fix that problem, and run it again. Python checks syntax before it executes any lines.</p>
+<p>Expected output once fixed: <code>NOT AT LIMIT</code>.</p>
+<p>For each error, write down its type and the change you made. Leave the readings and limit unchanged; correct the index, the comparison and the key.</p>
+<p><strong>Play around:</strong> after fixing the program, change the last reading to 20. The expected output is now <code>AT LIMIT</code>.</p>
+<p><strong>Think about it:</strong> why did Python report the comparison mistake before the incorrect index, even though the index appears earlier in the file?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F10_fix_bugs.py" title="Python editor: fix the bugs" width="100%" height="600"></iframe>
+<!-- END TASK 10 -->
+
+<!-- START TASK 11: Checkpoint — a sensor report -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Checkpoint — a sensor report</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Instructions (everyone):</strong> combine a list, a dictionary, decisions and f-strings. Pick a temperature using <code>index</code>; use the dictionary for the site name and depth. Classify the temperature with <code>if / elif / else</code>: below -10 C is <code>COLD</code>, otherwise below 0 C is <code>COOL</code>, and everything else is <code>WARM</code>.</p>
+<p>For <code>index = 0</code>, print:</p>
+<pre>Site: Camp A
+Depth: 340 m
+Temperature: -12.5 C
+Band: COLD</pre>
+<p>Record the following three test cases with their expected results, then run each separately. Keep the same four-line report each time; the first two lines stay the same.</p>
+<table><thead><tr><th>index</th><th>Expected temperature line</th><th>Expected band line</th></tr></thead><tbody>
+    <tr><td>0</td><td><code>Temperature: -12.5 C</code></td><td><code>Band: COLD</code></td></tr>
+    <tr><td>1</td><td><code>Temperature: -5.0 C</code></td><td><code>Band: COOL</code></td></tr>
+    <tr><td>2</td><td><code>Temperature: 3.0 C</code></td><td><code>Band: WARM</code></td></tr>
+</tbody></table>
+<p><strong>Play around:</strong> change a reading to exactly -10 (expected band: <code>COOL</code>) and then to exactly 0 (expected band: <code>WARM</code>). Change the site details too.</p>
+<p><strong>Think about it:</strong> which values are selected by position, and which by name?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F11_checkpoint.py" title="Python editor: sensor-report checkpoint" width="100%" height="600"></iframe>
+<!-- END TASK 11 -->
+
+<!-- START TASK 12: Optional — known sites -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Optional — known sites</h2>
+<hr>
+Difficulty: ★★★<p><br></p>
+<p><strong>Instructions:</strong> classify <code>site["temp_c"]</code> using the checkpoint bands and print the band. Then make a <strong>second decision</strong>: use <code>in</code> to check whether <code>site["name"]</code> is in <code>known_sites</code>. Print <code>KNOWN SITE</code> if it is, or <code>CHECK SITE NAME</code> if it is not.</p>
+<p>For the original data, expected output:</p>
+<pre>COLD
+KNOWN SITE</pre>
+<p>Try these additional cases:</p>
+<table><thead><tr><th>Site name</th><th>Temperature</th><th>Expected lines</th></tr></thead><tbody>
+    <tr><td>Camp B</td><td>-5.0</td><td><code>COOL</code>, then <code>KNOWN SITE</code></td></tr>
+    <tr><td>Camp C</td><td>3.0</td><td><code>WARM</code>, then <code>CHECK SITE NAME</code></td></tr>
+</tbody></table>
+<p><strong>Play around:</strong> append <code>"Camp C"</code> to the known-sites list and repeat the last test. Try a differently capitalised name.</p>
+<p><strong>Think about it:</strong> why are these two decisions separate rather than one long <code>elif</code> chain?</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F12_known_sites.py" title="Python editor: known sites extension" width="100%" height="600"></iframe>
+<!-- END TASK 12 -->
