@@ -21,6 +21,10 @@ def check_materials():
     html = (ROOT / 'moodle_class2.html').read_text()
     blocks = re.findall(r'<!-- START TASK (\d+):.*?<!-- END TASK \1 -->', html, re.S)
     assert blocks == [str(i) for i in range(1, 13)]
+    assert html.count('<strong>Reflection:</strong>') == 12
+    assert html.count('<strong>Answer:</strong>') == 12
+    assert 'Think about it' not in html
+    assert not re.search(r'\breadings?\b|01_readings', html, re.I)
     links = re.findall(r'<iframe src="([^"]+)"', html)
     assert len(links) == 12
     for index, link in enumerate(links, 1):
@@ -76,7 +80,7 @@ def main():
             page.on('pageerror', lambda error: failures.append(str(error)))
 
             # Real relative-file loading and independent saved drafts.
-            first = 'exercises/class2/01_readings.py'
+            first = 'exercises/class2/01_measurements.py'
             original = (ROOT / first).read_text()
             open_runner(page, base, file=first)
             assert page.evaluate('editor.getValue()') == original
@@ -117,7 +121,7 @@ def main():
 
             # Clean Python errors, including compile-time errors and exceptions
             # with chained causes, while keeping student line numbers and output.
-            output = clean_error(page, 'print("before")\nraise ValueError("bad reading")', 'ValueError: bad reading')
+            output = clean_error(page, 'print("before")\nraise ValueError("invalid measurement")', 'ValueError: invalid measurement')
             assert output.startswith('before\nTraceback') and 'line 2' in output
             clean_error(page, 'print(missing)', "NameError: name 'missing' is not defined")
             clean_error(page, 'print([1][3])', 'IndexError: list index out of range')
@@ -134,9 +138,9 @@ def main():
             # input() echoes the prompt/reply, cancellation is a clean error,
             # and the original input() is restored after each run.
             page.once('dialog', lambda dialog: dialog.accept('2.5'))
-            assert run(page, 'value = float(input("Reading: "))\nprint(value * 2)') == 'Reading: 2.5\n5.0'
+            assert run(page, 'value = float(input("Measurement: "))\nprint(value * 2)') == 'Measurement: 2.5\n5.0'
             page.once('dialog', lambda dialog: dialog.dismiss())
-            clean_error(page, 'input("Reading: ")', 'KeyboardInterrupt: Input cancelled')
+            clean_error(page, 'input("Measurement: ")', 'KeyboardInterrupt: Input cancelled')
             assert run(page, 'print(7)') == '7'
             clean_error(page, 'while True:\n    pass', 'RunTimeout: Your code was stopped after 5 seconds. Is there an infinite loop?')
             assert run(page, 'print("recovered")') == 'recovered'

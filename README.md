@@ -18,9 +18,9 @@ Output printed before an error and writes to stderr are retained.
 These work as an iframe `src` or a normal anchor `href`:
 
 ```html
-<a href="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F01_readings.py">Open Task 1</a>
+<a href="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F01_measurements.py">Open Task 1</a>
 
-<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F01_readings.py" width="100%" height="600" title="Python Task 1"></iframe>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F01_measurements.py" width="100%" height="600" title="Python Task 1"></iframe>
 
 <a href="https://mforb.github.io/pyodide-html/runner_link.html?code=print%28%22Hello%22%29">Open a text starter</a>
 ```
@@ -75,7 +75,8 @@ into every individual task, as that would reset the numbering.
 | 12 | Optional known-sites membership and classification extension |
 
 Tasks 1–6 fit the first self-paced block, and 7–12 the second. Each task includes
-expected outputs, room to experiment, and a question to discuss. No loops,
+expected outputs, room to experiment, and a formal reflection question with an
+explanatory answer. No loops,
 comprehensions or NumPy are required. The matching incomplete starter files are
 under `exercises/class2/`; Task 10 intentionally contains a syntax error.
 

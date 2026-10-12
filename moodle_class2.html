@@ -16,26 +16,27 @@ There are no loops. Allow time to change values, predict, run and compare.
     var number = 0;
 </script>
 
-<!-- START TASK 1: Reading a list -->
+<!-- START TASK 1: Selecting measurements from a list -->
 <h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
         <script>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: Reading a list</h2>
+    </span>: Selecting measurements from a list</h2>
 <hr>
 Difficulty: ★☆☆<p><br></p>
-<p><strong>Instructions:</strong> the editor contains eight sensor readings. Print the first reading, the last reading using a negative index, the middle four readings (indices 2 to 5), and all readings from the third item onwards. Use indexing and slicing; do not use a loop.</p>
+<p><strong>Instructions:</strong> the editor contains eight sensor measurements. Print the first measurement, the last measurement using a negative index, the middle four measurements (indices 2 to 5), and all measurements from the third item onwards. Use indexing and slicing; do not use a loop.</p>
 <p>Predict the four results before you run your code. Remember: the first index is <code>0</code>, and a slice does not include its stop index.</p>
 <p>Expected output:</p>
 <pre>10
 24
 [14, 16, 18, 20]
 [14, 16, 18, 20, 22, 24]</pre>
-<p><strong>Play around:</strong> add a ninth reading. Which of your four results change? Try <code>readings[:]</code>, <code>readings[:3]</code> and <code>readings[-3:]</code>.</p>
-<p><strong>Think about it:</strong> what would happen if you tried to read <code>readings[8]</code> before adding that ninth item?</p>
+<p><strong>Play around:</strong> add a ninth measurement. Which of your four results change? Try <code>measurements[:]</code>, <code>measurements[:3]</code> and <code>measurements[-3:]</code>.</p>
+<p><strong>Reflection:</strong> What happens if you access <code>measurements[8]</code> before appending a ninth item?</p>
+<p><strong>Answer:</strong> Python raises <code>IndexError: list index out of range</code>. A list of eight items has indices 0 to 7, so no item exists at index 8. Appending a ninth item creates that position.</p>
 <p><br></p>
-<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F01_readings.py" title="Python editor: reading a list" width="100%" height="600"></iframe>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F01_measurements.py" title="Python editor: selecting measurements from a list" width="100%" height="600"></iframe>
 <!-- END TASK 1 -->
 
 <!-- START TASK 2: Slicing a sensor label -->
@@ -53,23 +54,24 @@ Difficulty: ★☆☆<p><br></p>
 CAMP-A
 A</pre>
 <p><strong>Play around:</strong> draw the label with an index under each character. Predict <code>sensor_id[4:5]</code>, <code>sensor_id[:0]</code> and <code>sensor_id[-6:]</code>, then check.</p>
-<p><strong>Think about it:</strong> why does the site name begin at index 5 rather than index 4?</p>
+<p><strong>Reflection:</strong> Why does the site name in <code>"TEMP-CAMP-A"</code> begin at index 5 rather than index 4?</p>
+<p><strong>Answer:</strong> Python counts character positions from 0. The four letters in <code>TEMP</code> occupy indices 0 to 3, and the separating hyphen occupies index 4. The first character of <code>CAMP-A</code> is therefore at index 5.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F02_text_slices.py" title="Python editor: slicing a sensor label" width="100%" height="600"></iframe>
 <!-- END TASK 2 -->
 
-<!-- START TASK 3: Editing the readings -->
+<!-- START TASK 3: Editing the measurements -->
 <h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
         <script>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: Editing the readings</h2>
+    </span>: Editing the measurements</h2>
 <hr>
 Difficulty: ★☆☆<p><br></p>
 <p><strong>Instructions:</strong> start with <code>[10, 12, 14]</code>. In this order:</p>
 <ol>
-    <li>Change the second reading to <code>13</code>.</li>
+    <li>Change the second measurement to <code>13</code>.</li>
     <li>Use <code>append()</code> to add <code>16</code>.</li>
     <li>Use <code>insert()</code> to put <code>8</code> at the beginning.</li>
     <li>Use <code>pop()</code> to remove the last item, saving its value in <code>removed</code>.</li>
@@ -77,33 +79,35 @@ Difficulty: ★☆☆<p><br></p>
 </ol>
 <p>Print the list after each step while developing your code. Then print this final report:</p>
 <pre>Removed: 16
-Final readings: [8, 13, 14]</pre>
+Final measurements: [8, 13, 14]</pre>
 <p><strong>Play around:</strong> add another <code>13</code> and try <code>remove(13)</code>. Try <code>pop(0)</code> on a fresh list.</p>
-<p><strong>Think about it:</strong> how is removing an item by its value different from removing it by its position?</p>
+<p><strong>Reflection:</strong> How do <code>remove(value)</code> and <code>pop(index)</code> select the item to remove?</p>
+<p><strong>Answer:</strong> <code>remove(value)</code> searches for the value and removes its first occurrence. <code>pop(index)</code> removes the item at the specified position and returns its value. With no index, <code>pop()</code> removes and returns the last item.</p>
 <p><br></p>
-<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F03_edit_list.py" title="Python editor: editing the readings" width="100%" height="600"></iframe>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F03_edit_list.py" title="Python editor: editing the measurements" width="100%" height="600"></iframe>
 <!-- END TASK 3 -->
 
-<!-- START TASK 4: A readings report -->
+<!-- START TASK 4: A measurement report -->
 <h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
         <script>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: A readings report</h2>
+    </span>: A measurement report</h2>
 <hr>
 Difficulty: ★☆☆<p><br></p>
-<p><strong>Instructions:</strong> use <code>sum()</code>, <code>len()</code>, <code>min()</code> and <code>max()</code> to report the eight readings. The mean is the sum divided by the count; the range is the maximum minus the minimum. No loops are needed.</p>
+<p><strong>Instructions:</strong> use <code>sum()</code>, <code>len()</code>, <code>min()</code> and <code>max()</code> to report the eight measurements. The mean is the sum divided by the count; the range is the maximum minus the minimum. No loops are needed.</p>
 <p>Use f-strings for the labels and show the mean to one decimal place. Expected output:</p>
 <pre>Count: 8
 Mean: 17.0
 Minimum: 10
 Maximum: 24
 Range: 14</pre>
-<p><strong>Play around:</strong> replace the last reading with <code>100</code>. Predict the new mean and range. Try printing <code>sorted(readings)</code> and then the original list.</p>
-<p><strong>Think about it:</strong> does sorting change the mean? Does <code>sorted()</code> change the stored list?</p>
+<p><strong>Play around:</strong> replace the last measurement with <code>100</code>. Predict the new mean and range. Try printing <code>sorted(measurements)</code> and then the original list.</p>
+<p><strong>Reflection:</strong> Does sorting the measurements change their mean, and does <code>sorted(measurements)</code> modify the original list?</p>
+<p><strong>Answer:</strong> Sorting changes the order, not the values or the number of items, so the mean remains the same. <code>sorted(measurements)</code> returns a new sorted list and leaves the original list unchanged.</p>
 <p><br></p>
-<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F04_statistics.py" title="Python editor: a readings report" width="100%" height="600"></iframe>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F04_statistics.py" title="Python editor: a measurement report" width="100%" height="600"></iframe>
 <!-- END TASK 4 -->
 
 <!-- START TASK 5: Coordinates in a tuple -->
@@ -121,7 +125,8 @@ Difficulty: ★☆☆<p><br></p>
 y: 4.0 m
 Distance: 5.0 m</pre>
 <p><strong>Play around:</strong> change the tuple to <code>(6.0, 8.0)</code> and predict the distance. Then try <code>point[0] = 6.0</code>, read the error, and remove that line again.</p>
-<p><strong>Think about it:</strong> what does “immutable” mean? How would the assignment behave if <code>point</code> were a list?</p>
+<p><strong>Reflection:</strong> Why does <code>point[0] = 6.0</code> fail when <code>point</code> is a tuple, and how would it behave with a list?</p>
+<p><strong>Answer:</strong> A tuple is immutable: its items cannot be replaced after it is created. This assignment therefore raises a <code>TypeError</code>. A list is mutable, so the same assignment would replace its first item with <code>6.0</code>.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F05_tuple.py" title="Python editor: coordinates in a tuple" width="100%" height="600"></iframe>
 <!-- END TASK 5 -->
@@ -143,7 +148,8 @@ Depth: 340 m
 Active: True
 Has depth: True</pre>
 <p><strong>Play around:</strong> add a <code>sensor_id</code> field. Check whether <code>"Camp A" in site</code> is True or False, then try a misspelled key and read the error.</p>
-<p><strong>Think about it:</strong> why is a dictionary a better fit than a list for the fields of this record?</p>
+<p><strong>Reflection:</strong> Why is a dictionary suitable for storing the named fields of a site record?</p>
+<p><strong>Answer:</strong> A dictionary gives each field a descriptive key, such as <code>"temp_c"</code> or <code>"depth_m"</code>. Values can be retrieved by their meaning without remembering numerical positions. A list is more suitable when items form a sequence, such as a series of measurements.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F06_site_record.py" title="Python editor: a field-site record" width="100%" height="600"></iframe>
 <!-- END TASK 6 -->
@@ -165,7 +171,8 @@ Difficulty: ★☆☆<p><br></p>
     <tr><td>2.5</td><td><code>PASS</code></td></tr>
 </tbody></table>
 <p><strong>Play around:</strong> change <code>minimum</code> to <code>1.5</code>. Try <code>1.49</code>, <code>1.5</code> and <code>1.51</code>.</p>
-<p><strong>Think about it:</strong> why is a test exactly at the limit important? Which comparison operator includes that value?</p>
+<p><strong>Reflection:</strong> Why should a pass/fail check be tested exactly at the minimum, and which operator includes that boundary value?</p>
+<p><strong>Answer:</strong> A boundary test checks whether equality is handled correctly. The condition <code>factor &gt;= minimum</code> includes the minimum and produces <code>PASS</code> at that value. Using <code>&gt;</code> instead would incorrectly exclude it.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F07_pass_fail.py" title="Python editor: a pass or fail check" width="100%" height="600"></iframe>
 <!-- END TASK 7 -->
@@ -189,7 +196,8 @@ Difficulty: ★★☆<p><br></p>
     <tr><td>25</td><td><code>STOP</code></td></tr>
 </tbody></table>
 <p><strong>Play around:</strong> swap the order of the first two conditions and try 25. Explain what changes, then put the correct order back.</p>
-<p><strong>Think about it:</strong> how many branches of an <code>if / elif / else</code> chain can run on one pass?</p>
+<p><strong>Reflection:</strong> How many branches run when an <code>if / elif / else</code> chain is evaluated, and why does their order matter?</p>
+<p><strong>Answer:</strong> Exactly one branch runs in a chain that includes <code>else</code>. Python checks conditions in order and selects the first true condition; if none is true, it selects <code>else</code>. A broad condition placed too early can prevent a more specific condition from being reached.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F08_wind_bands.py" title="Python editor: wind-speed bands" width="100%" height="600"></iframe>
 <!-- END TASK 8 -->
@@ -213,7 +221,8 @@ Difficulty: ★★☆<p><br></p>
     <tr><td>False</td><td>2.0</td><td><code>NO ALARM</code></td></tr>
 </tbody></table>
 <p><strong>Play around:</strong> change the limits in the dictionary and test the new endpoints. What happens if you remove the brackets around your <code>or</code> checks?</p>
-<p><strong>Think about it:</strong> why does an inactive site produce no alarm even if its reading is outside the range?</p>
+<p><strong>Reflection:</strong> Why does an inactive site produce <code>NO ALARM</code> even when its temperature measurement is outside the allowed range?</p>
+<p><strong>Answer:</strong> The alarm condition requires both an active site and an out-of-range temperature. When <code>site["active"]</code> is <code>False</code>, the combined <code>and</code> condition is false, so the program selects <code>NO ALARM</code>. Python also skips evaluating the right-hand condition once the left-hand condition is false.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F09_alarm.py" title="Python editor: a sensor alarm" width="100%" height="600"></iframe>
 <!-- END TASK 9 -->
@@ -227,11 +236,12 @@ Difficulty: ★★☆<p><br></p>
     </span>: Fix the collection and decision bugs</h2>
 <hr>
 Difficulty: ★★☆<p><br></p>
-<p><strong>Instructions:</strong> this program should select the <strong>last reading</strong> and check whether it <strong>equals</strong> the site’s limit. It has <strong>three</strong> mistakes. Run it, read the error from the <strong>last line up</strong>, fix that problem, and run it again. Python checks syntax before it executes any lines.</p>
+<p><strong>Instructions:</strong> this program should select the <strong>last measurement</strong> and check whether it <strong>equals</strong> the site’s limit. It has <strong>three</strong> mistakes. Run it, read the error from the <strong>last line up</strong>, fix that problem, and run it again. Python checks syntax before it executes any lines.</p>
 <p>Expected output once fixed: <code>NOT AT LIMIT</code>.</p>
-<p>For each error, write down its type and the change you made. Leave the readings and limit unchanged; correct the index, the comparison and the key.</p>
-<p><strong>Play around:</strong> after fixing the program, change the last reading to 20. The expected output is now <code>AT LIMIT</code>.</p>
-<p><strong>Think about it:</strong> why did Python report the comparison mistake before the incorrect index, even though the index appears earlier in the file?</p>
+<p>For each error, write down its type and the change you made. Leave the measurements and limit unchanged; correct the index, the comparison and the key.</p>
+<p><strong>Play around:</strong> after fixing the program, change the last measurement to 20. The expected output is now <code>AT LIMIT</code>.</p>
+<p><strong>Reflection:</strong> Why is the invalid comparison reported before the incorrect index, although the indexing statement occurs earlier in the file?</p>
+<p><strong>Answer:</strong> Python parses and compiles the whole program before executing it. The invalid comparison causes a <code>SyntaxError</code> during that stage, so the indexing statement has not yet run. After the syntax is corrected, execution reaches that statement and exposes the <code>IndexError</code>.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F10_fix_bugs.py" title="Python editor: fix the bugs" width="100%" height="600"></iframe>
 <!-- END TASK 10 -->
@@ -257,8 +267,9 @@ Band: COLD</pre>
     <tr><td>1</td><td><code>Temperature: -5.0 C</code></td><td><code>Band: COOL</code></td></tr>
     <tr><td>2</td><td><code>Temperature: 3.0 C</code></td><td><code>Band: WARM</code></td></tr>
 </tbody></table>
-<p><strong>Play around:</strong> change a reading to exactly -10 (expected band: <code>COOL</code>) and then to exactly 0 (expected band: <code>WARM</code>). Change the site details too.</p>
-<p><strong>Think about it:</strong> which values are selected by position, and which by name?</p>
+<p><strong>Play around:</strong> change a measurement to exactly -10 (expected band: <code>COOL</code>) and then to exactly 0 (expected band: <code>WARM</code>). Change the site details too.</p>
+<p><strong>Reflection:</strong> Which values in the report are retrieved by position, and which are retrieved by name?</p>
+<p><strong>Answer:</strong> The temperature is retrieved by its position using <code>measurements[index]</code>. The site name and depth are retrieved using the dictionary keys <code>site["name"]</code> and <code>site["depth_m"]</code>. The band is then calculated by evaluating conditions on the selected temperature.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F11_checkpoint.py" title="Python editor: sensor-report checkpoint" width="100%" height="600"></iframe>
 <!-- END TASK 11 -->
@@ -282,7 +293,8 @@ KNOWN SITE</pre>
     <tr><td>Camp C</td><td>3.0</td><td><code>WARM</code>, then <code>CHECK SITE NAME</code></td></tr>
 </tbody></table>
 <p><strong>Play around:</strong> append <code>"Camp C"</code> to the known-sites list and repeat the last test. Try a differently capitalised name.</p>
-<p><strong>Think about it:</strong> why are these two decisions separate rather than one long <code>elif</code> chain?</p>
+<p><strong>Reflection:</strong> Why should temperature classification and site-name validation use separate decisions rather than one <code>elif</code> chain?</p>
+<p><strong>Answer:</strong> They answer two independent questions, and the program must produce a result for both. A single <code>elif</code> chain would select only one branch. Separate decisions allow the program to classify the temperature and also report whether the site name is recognised.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F12_known_sites.py" title="Python editor: known sites extension" width="100%" height="600"></iframe>
 <!-- END TASK 12 -->

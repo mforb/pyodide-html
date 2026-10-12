@@ -1,7 +1,7 @@
 # Task 3: edit this list, one step at a time.
-readings = [10, 12, 14]
+measurements = [10, 12, 14]
 
-# Change the second reading to 13.
+# Change the second measurement to 13.
 # Append 16, then insert 8 at the beginning.
 # Use pop() to remove the last item; store it as removed.
 # Remove the value 10.
