@@ -1,5 +1,5 @@
 <!--
-MG5001 Python Class 2: Collections and decisions — 12 Moodle text blocks.
+MG5001 Python Class 2: Collections and decisions — 13 Moodle text blocks.
 
 Copy each START TASK ... END TASK block into a separate Moodle text/HTML area.
 Each block is independent, apart from your existing section/number counters.
@@ -7,8 +7,8 @@ The script below is an OPTIONAL section header: copy it once only if the
 section does not already initialise those counters. Change 8 to your section.
 For a plain HTML preview, this file can also be opened on GitHub Pages.
 
-Tasks 1–6: first self-paced block. Tasks 7–10: second self-paced block.
-Task 11: everyone’s checkpoint. Task 12: optional extension.
+Tasks 1–6: first self-paced block. Tasks 7–11: second self-paced block.
+Task 11: everyone’s checkpoint. Tasks 12–13: optional extensions.
 There are no loops. Allow time to change values, predict, run and compare.
 -->
 <script>
@@ -298,3 +298,24 @@ KNOWN SITE</pre>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F12_known_sites.py" title="Python editor: known sites extension" width="100%" height="600"></iframe>
 <!-- END TASK 12 -->
+
+<!-- START TASK 13: Optional — unique known sites with a set -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Optional — unique known sites with a set</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Instructions:</strong> a set stores unique values and is useful for membership checks. The starter contains a repeated site name. Print the number of unique known sites, check whether <code>"Camp A"</code> is known, add <code>"Camp C"</code> with <code>add()</code>, and remove <code>"Camp B"</code> with <code>discard()</code>. Print the final names in alphabetical order with <code>sorted()</code>, so the output is predictable.</p>
+<p>Expected output:</p>
+<pre>Unique sites: 2
+Camp A known: True
+Sites: ['Camp A', 'Camp C']</pre>
+<p><strong>Play around:</strong> add <code>"Camp A"</code> again and check the count. Try removing a name that is not in the set with <code>discard()</code>. Compare the result with <code>remove()</code>.</p>
+<p><strong>Reflection:</strong> Why does adding <code>"Camp A"</code> again not increase the set's length, and why do we sort the values before printing them?</p>
+<p><strong>Answer:</strong> A set stores each distinct value only once, so repeated additions do not change its length. Sets are unordered, so their displayed order is not guaranteed; <code>sorted()</code> returns the values in a predictable order without changing the set.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass2%2F13_sets.py" title="Python editor: unique known sites with a set" width="100%" height="600"></iframe>
+<!-- END TASK 13 -->

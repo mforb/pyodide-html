@@ -49,7 +49,7 @@ No code runs automatically when a link opens.
 
 ## Class 2 Moodle blocks
 
-`moodle_class2.html` stores **12 copyable Moodle HTML blocks**, using the existing
+`moodle_class2.html` stores **13 copyable Moodle HTML blocks**, using the existing
 Python-logo heading, `section`/`number` numbering, difficulty stars and 600px
 runner iframe format. `START TASK` / `END TASK` comments mark each complete block.
 
@@ -73,8 +73,10 @@ into every individual task, as that would reset the numbering.
 | 10 | Three deliberate bugs: SyntaxError, IndexError, KeyError |
 | 11 | Everyone's sensor-report checkpoint, with three test cases |
 | 12 | Optional known-sites membership and classification extension |
+| 13 | Optional set uniqueness, membership, add/discard and sorting |
 
-Tasks 1–6 fit the first self-paced block, and 7–12 the second. Each task includes
+Tasks 1–6 fit the first self-paced block, and 7–11 the second; 12–13 are optional
+extensions. Each task includes
 expected outputs, room to experiment, and a formal reflection question with an
 explanatory answer. No loops,
 comprehensions or NumPy are required. The matching incomplete starter files are
