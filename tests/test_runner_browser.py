@@ -7,8 +7,6 @@ from threading import Thread
 from urllib.parse import parse_qs, urlencode, urlparse
 import re
 
-from playwright.sync_api import sync_playwright
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -18,31 +16,40 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 
 def check_materials():
-    html = (ROOT / 'moodle_class2.html').read_text()
-    blocks = re.findall(r'<!-- START TASK (\d+):.*?<!-- END TASK \1 -->', html, re.S)
-    assert blocks == [str(i) for i in range(1, 13)]
-    assert html.count('<strong>Reflection:</strong>') == 12
-    assert html.count('<strong>Answer:</strong>') == 12
-    assert 'Think about it' not in html
-    assert not re.search(r'\breadings?\b|01_readings', html, re.I)
-    links = re.findall(r'<iframe src="([^"]+)"', html)
-    assert len(links) == 12
-    for index, link in enumerate(links, 1):
-        url = urlparse(link)
-        assert url.path == '/pyodide-html/runner_link.html'
-        starter = ROOT / parse_qs(url.query)['file'][0]
-        assert starter.is_file(), starter
-        source = starter.read_text()
-        if index == 10:
-            try:
-                compile(source, str(starter), 'exec')
-            except SyntaxError:
-                pass
-            else:
-                raise AssertionError('The debugging starter should have a syntax error')
+    materials = {}
+    for class_number, count in ((2, 13), (3, 12)):
+        html = (ROOT / f'moodle_class{class_number}.html').read_text()
+        blocks = re.findall(r'<!-- START TASK (\d+):.*?<!-- END TASK \1 -->', html, re.S)
+        assert blocks == [str(i) for i in range(1, count + 1)]
+        assert html.count('<strong>Reflection:</strong>') == count
+        assert html.count('<strong>Answer:</strong>') == count
+        assert 'Think about it' not in html
+        if class_number == 2:
+            assert not re.search(r'\breadings?\b|01_readings', html, re.I)
         else:
-            compile(source, str(starter), 'exec')
-    return links
+            assert html.count('<strong>Plan first') == count
+        links = re.findall(r'<iframe src="([^"]+)"', html)
+        assert len(links) == count
+        for index, link in enumerate(links, 1):
+            url = urlparse(link)
+            assert url.path == '/pyodide-html/runner_link.html'
+            relative = parse_qs(url.query)['file'][0]
+            assert relative.startswith(f'exercises/class{class_number}/{index:02d}_')
+            starter = ROOT / relative
+            assert starter.is_file(), starter
+            source = starter.read_text()
+            if class_number == 2 and index == 10:
+                try:
+                    compile(source, str(starter), 'exec')
+                except SyntaxError:
+                    pass
+                else:
+                    raise AssertionError('The debugging starter should have a syntax error')
+            else:
+                # Class 3 Task 9 compiles but intentionally does not terminate.
+                compile(source, str(starter), 'exec')
+        materials[class_number] = links
+    return materials
 
 
 def open_runner(page, base, **params):
@@ -67,7 +74,9 @@ def clean_error(page, code, ending):
 
 
 def main():
-    links = check_materials()
+    from playwright.sync_api import sync_playwright
+
+    materials = check_materials()
     server = ThreadingHTTPServer(('127.0.0.1', 0), partial(QuietHandler, directory=str(ROOT)))
     Thread(target=server.serve_forever, daemon=True).start()
     base = f'http://127.0.0.1:{server.server_port}'
@@ -194,18 +203,23 @@ def main():
             frame.locator('#output').get_by_text('iframe', exact=True).wait_for()
             iframe_page.close()
 
-            # Preview numbering and 12 iframe links, without starting 12 runtimes.
+            # Preview both classes without starting a runtime for every iframe.
             preview = context.new_page()
             preview.route('https://mforb.github.io/pyodide-html/runner_link.html*', lambda route: route.fulfill(body='<p>Runner placeholder</p>', content_type='text/html'))
-            preview.goto(base + '/moodle_class2.html')
-            headings = preview.locator('h2').all_text_contents()
-            assert len(headings) == 12
-            for index, heading in enumerate(headings, 1):
-                assert re.search(rf'Task 8\.{index}\s*:', heading), heading
-            assert preview.locator('iframe').count() == len(links)
+            for class_number, links in materials.items():
+                preview.goto(base + f'/moodle_class{class_number}.html')
+                headings = preview.locator('h2').all_text_contents()
+                assert len(headings) == len(links)
+                for index, heading in enumerate(headings, 1):
+                    assert re.search(rf'Task {class_number + 6}\.{index}\s*:', heading), heading
+                assert preview.locator('iframe').count() == len(links)
+            for link in materials[3]:
+                relative = parse_qs(urlparse(link).query)['file'][0]
+                loaded = page.evaluate('(file) => loadStarter(codeSource(new URLSearchParams({file})))', relative)
+                assert loaded == (ROOT / relative).read_text()
             assert not failures, failures
             browser.close()
-        print('PASS: 12 exercise blocks/starters, URL loading, autosave/reset, href/iframe integration, clean Python errors, prompts, timeout, packages and controls.')
+        print('PASS: 25 exercise blocks/starters, Class 2/3 previews, URL loading, autosave/reset, href/iframe integration, clean Python errors, prompts, timeout, packages and controls.')
     finally:
         server.shutdown()
         server.server_close()

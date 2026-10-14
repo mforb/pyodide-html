@@ -1,0 +1,309 @@
+<!--
+MG5001 Python Class 3: Loops and algorithms — 12 Moodle text blocks.
+
+Copy each START TASK ... END TASK block into a separate Moodle text/HTML area.
+The OPTIONAL numbering header below is copied once, only if section/number
+are not already initialised. Default section 9 follows Class 2's section 8.
+
+Tasks 1–5: first self-paced block. Tasks 6–9: second self-paced block.
+Task 10: everyone's checkpoint. Tasks 11–12: optional extensions.
+Working pattern: flow chart -> hand trace -> plain-language steps -> Python.
+No user-defined functions, comprehensions or NumPy are required. Use loops.
+Task 9 deliberately does not terminate until its missing update is fixed;
+the runner's five-second limit stops it. The other starters are incomplete.
+-->
+<script>
+    var section = 9;
+    var number = 0;
+</script>
+
+<!-- START TASK 1: Square root by repeated guessing -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Square root by repeated guessing</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> draw the square-root flow chart using start/end, input/output, process and decision symbols. Label the decision's Yes and No arrows. Trace the starting guess and the first two updates in a table with columns <code>guess</code>, <code>abs(guess * guess - x)</code> and <code>repeat?</code>. Write plain-language steps before coding.</p>
+<p><strong>Instructions:</strong> find the square root without <code>sqrt()</code> or <code>x ** 0.5</code>. Start with <code>guess = x / 2</code>. While <code>abs(guess * guess - x) &gt; tolerance</code>, improve the guess using <code>guess = (guess + x / guess) / 2</code>. Print the final root to six decimal places and whether its squared error is within tolerance.</p>
+<p>This version assumes <code>x &gt; 0</code> and <code>tolerance &gt; 0</code>. The tolerance applies to the squared error, not directly to the error in the root. Keep full precision during the calculation.</p>
+<p>Expected output:</p>
+<pre>Root: 1.414214
+Within tolerance: True</pre>
+<p><strong>Play around:</strong> repeat with <code>x = 9.0</code> (root <code>3.000000</code>) and <code>x = 0.25</code> (root <code>0.500000</code>). Check your answers afterwards with <code>x ** 0.5</code>.</p>
+<p><strong>Reflection:</strong> Why does the loop use a tolerance rather than require <code>guess * guess == x</code>?</p>
+<p><strong>Answer:</strong> Floating-point values are approximate, so rounding can leave a tiny nonzero error even after the guess stops changing. A positive tolerance defines an acceptable error and lets the algorithm finish when its answer is good enough.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F01_square_root.py" title="Python editor: square root by repeated guessing" width="100%" height="600"></iframe>
+<!-- END TASK 1 -->
+
+<!-- START TASK 2: Find the peak reading -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Find the peak reading</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Plan first:</strong> draw a flow chart that visits every reading, updates the peak only when a larger value is found, and reports the result after the last reading. Trace <code>r</code>, <code>peak before</code>, the decision result and <code>peak after</code> for all five readings. Write the plain-language steps.</p>
+<p><strong>Instructions:</strong> start the peak at the first reading. Use a <code>for</code> loop and an <code>if</code> statement to find the greatest value; do not use <code>max()</code>. Print the peak to one decimal place after the loop. Assume a non-empty list of numbers.</p>
+<p>Expected output: <code>Peak: 14.2</code>.</p>
+<p><strong>Play around:</strong> try <code>[-5.0, -2.0, -8.0]</code> (expected <code>Peak: -2.0</code>), <code>[7.0]</code> (expected <code>Peak: 7.0</code>) and a list where the largest value occurs more than once.</p>
+<p><strong>Reflection:</strong> Why should <code>peak</code> start at the first reading rather than at zero?</p>
+<p><strong>Answer:</strong> Zero might not occur in the data and might be greater than every valid reading. For an all-negative list, starting at zero would produce a false peak. Starting at an actual reading keeps the peak tied to the data.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F02_peak_reading.py" title="Python editor: find the peak reading" width="100%" height="600"></iframe>
+<!-- END TASK 2 -->
+
+<!-- START TASK 3: Load and deflection table -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Load and deflection table</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Plan first:</strong> draw the flow chart for generating loads, calculating deflection and printing one line per load. Trace the first two loads and deflections, then write the plain-language steps.</p>
+<p><strong>Instructions:</strong> use <code>range()</code> and a <code>for</code> loop to calculate the deflection at 0, 10, 20, 30, 40 and 50 kN. The stiffness is 20 kN/mm, so <code>deflection = load / stiffness</code>. Print deflection to two decimal places. Include the final 50 kN load.</p>
+<p>Expected output:</p>
+<pre>Load: 0 kN, deflection: 0.00 mm
+Load: 10 kN, deflection: 0.50 mm
+Load: 20 kN, deflection: 1.00 mm
+Load: 30 kN, deflection: 1.50 mm
+Load: 40 kN, deflection: 2.00 mm
+Load: 50 kN, deflection: 2.50 mm</pre>
+<p><strong>Play around:</strong> change the stiffness to 40 kN/mm and predict the last deflection (<code>1.25 mm</code>). Then generate a table at 5 kN steps, still including 50.</p>
+<p><strong>Reflection:</strong> Why does <code>range(0, 50, 10)</code> omit the required last load, and how can it be included?</p>
+<p><strong>Answer:</strong> The stop value of <code>range()</code> is excluded. A stop beyond 50, such as <code>range(0, 51, 10)</code>, generates 50 as the final value without generating 60.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F03_load_table.py" title="Python editor: load and deflection table" width="100%" height="600"></iframe>
+<!-- END TASK 3 -->
+
+<!-- START TASK 4: A report using accumulators -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: A report using accumulators</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> draw a flow chart with initialisation before the loop and reporting after it. Trace <code>r</code>, <code>total</code>, <code>count</code>, <code>lowest</code> and <code>peak</code> for the first three readings. Write the plain-language steps.</p>
+<p><strong>Instructions:</strong> use one <code>for</code> loop to calculate the count, total, minimum and maximum. Initialise the count and total to zero and both extremes to the first reading. Calculate the mean after the loop, then print the report below. Do not compute the results with <code>sum()</code>, <code>len()</code>, <code>min()</code> or <code>max()</code>. Assume a non-empty list of numbers.</p>
+<p>Use names such as <code>total</code>, <code>count</code>, <code>lowest</code> and <code>peak</code>; using <code>sum</code> or <code>max</code> as a variable name hides the built-in function.</p>
+<p>Expected output:</p>
+<pre>Count: 5
+Mean: 12.76
+Minimum: 11.8
+Maximum: 14.2</pre>
+<p><strong>Play around:</strong> try <code>[-5.0, -2.0, -8.0]</code> (count 3, mean -5.00, minimum -8.0, maximum -2.0). Try a single reading, then compare the results with the built-in functions without reusing their names as variables.</p>
+<p><strong>Reflection:</strong> What happens if <code>total = 0</code> is moved inside the loop, immediately before <code>total += r</code>?</p>
+<p><strong>Answer:</strong> Every pass resets the accumulated total, so only the current reading remains. After the final pass, the total equals the last reading rather than the sum of all readings. Initialisation belongs before the repeated steps.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F04_measurement_report.py" title="Python editor: a report using accumulators" width="100%" height="600"></iframe>
+<!-- END TASK 4 -->
+
+<!-- START TASK 5: Count readings above a limit -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Count readings above a limit</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Plan first:</strong> draw the flow chart and label both branches of the limit check. Trace <code>r</code> and <code>above</code> for every reading, then write the plain-language steps.</p>
+<p><strong>Instructions:</strong> use a <code>for</code> loop with an <code>if</code> statement to count readings <strong>strictly above</strong> 13.0. A reading exactly equal to 13.0 must not be counted.</p>
+<p>Expected output: <code>Above 13.0: 2</code>.</p>
+<p><strong>Play around:</strong> try <code>[13.0, 13.0]</code> (count 0), <code>[13.1, 14.0]</code> (count 2), and <code>[]</code> (count 0). Change the limit and predict the new count before running.</p>
+<p><strong>Reflection:</strong> Why does the counter update belong inside the <code>if</code> block as well as inside the loop?</p>
+<p><strong>Answer:</strong> It should increase only for readings that satisfy the condition. Placing the update outside the <code>if</code> would count every reading, including those equal to or below the limit.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F05_count_over_limit.py" title="Python editor: count readings above a limit" width="100%" height="600"></iframe>
+<!-- END TASK 5 -->
+
+<!-- START TASK 6: Check every site record -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Check every site record</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> draw a flow chart that visits each site and decides whether its error is within its own tolerance. Trace Camp B and Camp C, including the absolute error and the decision, then write the plain-language steps.</p>
+<p><strong>Instructions:</strong> each value in <code>sites</code> is another dictionary containing the site's named fields. Use <code>for name, record in sites.items():</code> to retrieve each name and record. Print <code>OK</code> when <code>abs(record["error_mm"]) &lt;= record["tolerance_mm"]</code>; otherwise print <code>CHECK</code>. Include the site name in each line.</p>
+<p>Expected output:</p>
+<pre>Camp A: OK
+Camp B: CHECK
+Camp C: OK</pre>
+<p><strong>Play around:</strong> change Camp B's tolerance to 1.0 (it now prints <code>OK</code>). Add Camp D with error -0.5 and tolerance 0.5 (it prints <code>OK</code> without changing the loop).</p>
+<p><strong>Reflection:</strong> Why is <code>abs()</code> needed when checking a signed measurement error against a tolerance?</p>
+<p><strong>Answer:</strong> A tolerance bounds the size of the error in either direction. Without <code>abs()</code>, a large negative error such as -0.8 would appear less than a positive tolerance such as 0.5 and could incorrectly pass.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F06_site_checks.py" title="Python editor: check every site record" width="100%" height="600"></iframe>
+<!-- END TASK 6 -->
+
+<!-- START TASK 7: Skip missing readings -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Skip missing readings</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Plan first:</strong> draw the flow chart so the missing-data branch returns for the next item. Trace <code>r</code> and <code>count</code> through all items, then write the plain-language steps.</p>
+<p><strong>Instructions:</strong> <code>None</code> marks a missing reading. Check <code>r is None</code> and use <code>continue</code> to skip it. Print each valid reading to one decimal place and count the valid readings. Print the final count after the loop. Zero and negative numbers remain valid.</p>
+<p>Expected output:</p>
+<pre>12.1
+14.2
+13.0
+Valid readings: 3</pre>
+<p><strong>Play around:</strong> try <code>[0.0, None, -2.0]</code>; both 0.0 and -2.0 should print, and the count is 2. Try <code>[None, None]</code>; only <code>Valid readings: 0</code> should print.</p>
+<p><strong>Reflection:</strong> Why is <code>if not r:</code> an unsuitable replacement for <code>if r is None:</code> here?</p>
+<p><strong>Answer:</strong> Both <code>None</code> and zero are false in a boolean check. <code>if not r:</code> would incorrectly skip a valid zero reading. <code>r is None</code> selects only the missing-data marker.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F07_skip_missing.py" title="Python editor: skip missing readings" width="100%" height="600"></iframe>
+<!-- END TASK 7 -->
+
+<!-- START TASK 8: Stop at the first overload -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Stop at the first overload</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> draw a flow chart with an early exit when an overload is found. Trace <code>load</code>, <code>checked</code> and <code>found</code>, then write the plain-language steps.</p>
+<p><strong>Instructions:</strong> inspect loads in order and count each inspected reading. An overload is strictly greater than 20 kN. On the first overload, print its value, set <code>found</code> to <code>True</code>, and use <code>break</code>. After the loop, print <code>No overload</code> if none was found. Always print the inspected count.</p>
+<p>Expected output:</p>
+<pre>First overload: 22 kN
+Readings checked: 3</pre>
+<p>Test these additional cases:</p>
+<table><thead><tr><th>loads</th><th>First line</th><th>Readings checked</th></tr></thead><tbody>
+    <tr><td><code>[20, 18]</code></td><td><code>No overload</code></td><td>2</td></tr>
+    <tr><td><code>[25, 30]</code></td><td><code>First overload: 25 kN</code></td><td>1</td></tr>
+    <tr><td><code>[]</code></td><td><code>No overload</code></td><td>0</td></tr>
+</tbody></table>
+<p><strong>Play around:</strong> temporarily replace <code>break</code> with <code>continue</code> and use <code>[22, 25, 18]</code>. Explain why it no longer stops at the first overload, then restore <code>break</code>.</p>
+<p><strong>Reflection:</strong> Why is the original last reading, 18 kN, not included in <code>checked</code>?</p>
+<p><strong>Answer:</strong> The loop exits as soon as it encounters 22 kN in the third position. The fourth reading is never visited. <code>break</code> ends the loop; it does not merely skip the current pass.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F08_first_overload.py" title="Python editor: stop at the first overload" width="100%" height="600"></iframe>
+<!-- END TASK 8 -->
+
+<!-- START TASK 9: Fix two loop bugs -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Fix two loop bugs</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> trace the range values on paper and two passes of the <code>while</code> loop. Sketch the corrected repeated path and write down what must change on each pass.</p>
+<p><strong>Instructions:</strong> the first loop should print loads from 0 to 50 inclusive at 10 kN steps. The second should add 1 + 2 + 3, then stop. There are two deliberate mistakes: an excluded endpoint and a missing update. Run the starter once to see the runner stop the infinite loop after five seconds, then fix both problems. Keep the initial values and the final print unchanged.</p>
+<p>Expected output after fixing:</p>
+<pre>0
+10
+20
+30
+40
+50
+Step total: 6</pre>
+<p><strong>Play around:</strong> change the second loop's upper bound to 5 (expected total 15). Predict how changing <code>&lt;=</code> to <code>&lt;</code> would affect the total.</p>
+<p><strong>Reflection:</strong> How can you tell from a hand trace that the original <code>while</code> loop will not finish?</p>
+<p><strong>Answer:</strong> <code>step</code> remains 1 on every pass, so <code>step &lt;= 3</code> remains true. Although <code>total</code> changes, the variable controlling termination does not. Updating <code>step</code> inside the loop lets the condition eventually become false.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F09_fix_loop_bugs.py" title="Python editor: fix two loop bugs" width="100%" height="600"></iframe>
+<!-- END TASK 9 -->
+
+<!-- START TASK 10: Checkpoint — process a measurement log -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Checkpoint — process a measurement log</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first (everyone):</strong> draw the full flow chart, including the missing-reading branch, peak update, limit check and no-valid-data decision after the loop. Write the plain-language steps. Hand-trace the first four items with columns <code>r</code>, <code>count</code>, <code>skipped</code>, <code>total</code>, <code>peak</code> and <code>above</code>.</p>
+<p><strong>Instructions:</strong> use a <code>for</code> loop to process the log. <code>None</code> marks missing data: count it as skipped and use <code>continue</code>. For valid numbers, update the total, valid count, peak and count strictly above 13.0. Initialise <code>peak = None</code> and set it from the first valid reading; one possible check is <code>peak is None or r &gt; peak</code>. Print the valid and skipped counts for every test. If there are no valid readings, print <code>No valid readings</code> and do not calculate a mean. Otherwise print the mean to two decimal places, peak to one decimal place, and over-limit count.</p>
+<p>Use loops for the calculations, rather than <code>sum()</code>, <code>len()</code>, <code>max()</code>, comprehensions or NumPy. Use descriptive variable names that do not hide built-in functions.</p>
+<p>Expected output for the original log:</p>
+<pre>Valid readings: 5
+Skipped: 2
+Mean: 12.76
+Peak: 14.2
+Above 13.0: 1</pre>
+<p>Predict and run each of these additional tests:</p>
+<table><thead><tr><th>readings</th><th>Valid / skipped</th><th>Remaining output</th></tr></thead><tbody>
+    <tr><td><code>[None, None]</code></td><td>0 / 2</td><td><code>No valid readings</code></td></tr>
+    <tr><td><code>[]</code></td><td>0 / 0</td><td><code>No valid readings</code></td></tr>
+    <tr><td><code>[-5.0, None, -2.0, -8.0]</code></td><td>3 / 1</td><td><code>Mean: -5.00</code>, <code>Peak: -2.0</code>, <code>Above 13.0: 0</code></td></tr>
+    <tr><td><code>[0.0, 13.0]</code></td><td>2 / 0</td><td><code>Mean: 6.50</code>, <code>Peak: 13.0</code>, <code>Above 13.0: 0</code></td></tr>
+</tbody></table>
+<p><strong>Play around:</strong> add a second peak and another <code>None</code>. Predict which report lines change. Keep zero, negative values and boundary values valid.</p>
+<p><strong>Reflection:</strong> Why should the program check <code>count == 0</code> after processing the list, rather than simply check whether the original list is empty?</p>
+<p><strong>Answer:</strong> A non-empty list can contain only missing readings. In that case there are still no valid measurements and the count is zero. Checking the valid count prevents division by zero and avoids reporting an undefined peak or mean.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F10_checkpoint.py" title="Python editor: measurement-log checkpoint" width="100%" height="600"></iframe>
+<!-- END TASK 10 -->
+
+<!-- START TASK 11: Optional — tolerance and update counts -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Optional — tolerance and update counts</h2>
+<hr>
+Difficulty: ★★★<p><br></p>
+<p><strong>Plan first:</strong> extend your square-root flow chart with an update counter. Predict the counts for the three tolerances below before running, and explain your reasoning in plain language.</p>
+<p><strong>Instructions:</strong> keep <code>x = 2.0</code> and count every completed improvement to the guess. Initialise <code>updates = 0</code> before the loop. Print tolerance in scientific notation using <code>{tolerance:.0e}</code>, the root to six decimal places, and the number of updates. Do not round the guess inside the loop.</p>
+<p>Expected output for the starter tolerance:</p>
+<pre>Tolerance: 1e-06
+Root: 1.414214
+Updates: 4</pre>
+<table><thead><tr><th>Tolerance</th><th>Root to six decimals</th><th>Updates</th></tr></thead><tbody>
+    <tr><td><code>1e-2</code></td><td><code>1.416667</code></td><td>2</td></tr>
+    <tr><td><code>1e-6</code></td><td><code>1.414214</code></td><td>4</td></tr>
+    <tr><td><code>1e-12</code></td><td><code>1.414214</code></td><td>5</td></tr>
+</tbody></table>
+<p><strong>Play around:</strong> try <code>x = 4.0</code>; the starting guess is already correct and requires zero updates. Try positive tolerances between those in the table.</p>
+<p><strong>Reflection:</strong> Why can two runs print the same rounded root but need different numbers of updates?</p>
+<p><strong>Answer:</strong> Six displayed decimal places hide smaller differences in the stored guesses. The stopping test uses the full-precision squared error, so a tighter tolerance can require another update even when the displayed root looks unchanged.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F11_tolerance_updates.py" title="Python editor: tolerance and update counts" width="100%" height="600"></iframe>
+<!-- END TASK 11 -->
+
+<!-- START TASK 12: Optional — add an iteration limit -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Optional — add an iteration limit</h2>
+<hr>
+Difficulty: ★★★<p><br></p>
+<p><strong>Plan first:</strong> draw the square-root flow chart with two reasons to stop: a sufficiently small error or the update limit. Include a final decision to report which result occurred. Trace the first two updates, then write the plain-language steps.</p>
+<p><strong>Instructions:</strong> extend the square-root loop so it repeats only while the squared error is greater than tolerance <strong>and</strong> <code>updates &lt; max_updates</code>. After the loop, print <code>CONVERGED</code> only if the actual error is within tolerance; otherwise print <code>NOT CONVERGED</code>. Always print the update count. Assume positive <code>x</code>, tolerance and update limit.</p>
+<p>The starter's <code>1e-16</code> tolerance is below the residual reached for x = 2 using these floating-point updates. Expected output:</p>
+<pre>NOT CONVERGED
+Updates: 20</pre>
+<table><thead><tr><th>Tolerance</th><th>max_updates</th><th>Expected lines</th></tr></thead><tbody>
+    <tr><td><code>1e-6</code></td><td>20</td><td><code>CONVERGED</code>, then <code>Updates: 4</code></td></tr>
+    <tr><td><code>1e-6</code></td><td>2</td><td><code>NOT CONVERGED</code>, then <code>Updates: 2</code></td></tr>
+</tbody></table>
+<p><strong>Play around:</strong> use <code>x = 4.0</code>, tolerance <code>1e-6</code> and limit 20. The expected result is <code>CONVERGED</code> with zero updates.</p>
+<p><strong>Reflection:</strong> Why does reaching the update limit not prove that a sufficiently accurate answer has been found?</p>
+<p><strong>Answer:</strong> An update limit controls how long the calculation can run; it does not measure accuracy. The program must check the residual separately after the loop and distinguish convergence from stopping because the limit was reached.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass3%2F12_iteration_limit.py" title="Python editor: add an iteration limit" width="100%" height="600"></iframe>
+<!-- END TASK 12 -->

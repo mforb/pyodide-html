@@ -85,7 +85,49 @@ under `exercises/class2/`; Task 10 intentionally contains a syntax error.
 Publish `runner_link.html`, `runner_link.js`, `moodle_class2.html` and
 `exercises/class2/` to the GitHub Pages branch before using the Moodle links.
 
-### Verification
+## Class 3 Moodle blocks
+
+`moodle_class3.html` contains **12 copyable Moodle HTML blocks** for loops and
+algorithms, with the same heading, numbering, difficulty stars, reflection
+answers and 600px runner iframes as Class 2. The optional numbering header
+defaults to section **9**; copy it once only and adjust it to your Moodle course.
+
+Each task begins with **flow chart → hand trace → plain-language steps → Python**.
+The first self-paced block uses Tasks 1–5; the second uses Tasks 6–10, followed
+by optional extensions 11–12. Use loops for the calculations; no user-defined
+functions, comprehensions or NumPy are required.
+
+| Block | Exercise |
+| --- | --- |
+| 1 | Square root by repeated guessing with a `while` loop |
+| 2 | Peak reading with a `for` loop and running maximum |
+| 3 | Load/deflection table with `range()` and an inclusive last load |
+| 4 | Count, mean, minimum and maximum using accumulators |
+| 5 | Count readings strictly above a limit, including boundary tests |
+| 6 | Loop over dictionary site records and check each site's tolerance |
+| 7 | Skip missing (`None`) readings with `continue` |
+| 8 | Stop at the first overload with `break` |
+| 9 | Fix an off-by-one endpoint and a missing `while` update |
+| 10 | Measurement-log checkpoint with missing, empty and negative data |
+| 11 | Optional square-root tolerance versus number of updates |
+| 12 | Optional iteration limit and convergence reporting |
+
+Incomplete starters are under `exercises/class3/`. **Task 9 deliberately contains
+an infinite loop** until the missing update is fixed; the runner stops it after
+five seconds. Compile checks are safe, but do not execute that starter with an
+unbounded local Python process. The square-root tasks state their positive-input
+assumptions and use an absolute squared-value residual.
+
+Publish `moodle_class3.html` and `exercises/class3/` alongside `runner_link.html`
+and `runner_link.js` on the GitHub Pages branch before using the new links.
+
+## Verification
+
+Material block/link/compile checks can run without browser dependencies:
+
+```bash
+python -c "import runpy; runpy.run_path('tests/test_runner_browser.py')['check_materials'](); print('PASS: Class 2 and Class 3 materials')"
+```
 
 Browser regression tests use the real CDN-hosted Ace and Pyodide runtime:
 
