@@ -121,12 +121,27 @@ assumptions and use an absolute squared-value residual.
 Publish `moodle_class3.html` and `exercises/class3/` alongside `runner_link.html`
 and `runner_link.js` on the GitHub Pages branch before using the new links.
 
+## Class 4 Moodle blocks
+
+`moodle_class4.html` contains **8 copyable Moodle HTML blocks** for functions and
+scientific Python. It uses the same heading, numbering, reflection answers and
+600px runner iframe format as Classes 2 and 3. The optional numbering header
+defaults to section **10**.
+
+Tasks 1–4 use functions and tests. Tasks 5–8 use NumPy arrays, masks and a
+matplotlib terrain plot; Task 8 is the required integration checkpoint. The
+matching starters are under `exercises/class4/`.
+
+Publish `moodle_class4.html` and `exercises/class4/` with the runner files before
+using the links in Moodle. The link runner includes a plot target so a student's
+`plt.show()` output is visible below the console.
+
 ## Verification
 
 Material block/link/compile checks can run without browser dependencies:
 
 ```bash
-python -c "import runpy; runpy.run_path('tests/test_runner_browser.py')['check_materials'](); print('PASS: Class 2 and Class 3 materials')"
+python -c "import runpy; runpy.run_path('tests/test_runner_browser.py')['check_materials'](); print('PASS: Class 2, Class 3 and Class 4 materials')"
 ```
 
 Browser regression tests use the real CDN-hosted Ace and Pyodide runtime:

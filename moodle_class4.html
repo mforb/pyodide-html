@@ -1,0 +1,184 @@
+<!--
+MG5001 Python Class 4: Functions and scientific Python - 8 Moodle text blocks.
+
+Copy each START TASK ... END TASK block into a separate Moodle text/HTML area.
+The optional numbering header below is copied once, only if section/number are
+not already initialised. Default section 10 follows Class 3's section 9.
+
+Tasks 1-4: functions and testing. Tasks 5-7: NumPy and plotting.
+Task 8: everyone's integration checkpoint.
+Working pattern: specify -> write a function -> test -> interpret.
+-->
+<script>
+    var section = 10;
+    var number = 0;
+</script>
+
+<!-- START TASK 1: A function with units -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: A function with units</h2>
+<hr>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Plan first:</strong> write the function contract: input is a Fahrenheit temperature in degrees F, output is a Celsius temperature in degrees C. List the three test values before coding.</p>
+<p><strong>Instructions:</strong> complete <code>celsius_from_fahrenheit(fahrenheit_f)</code>. Return the converted value rather than printing inside the function. Keep the unit-bearing parameter name and use the function for all three supplied values.</p>
+<p>Expected output:</p>
+<pre>98.6 F -&gt; 37.0 C
+212.0 F -&gt; 100.0 C
+-40.0 F -&gt; -40.0 C</pre>
+<p><strong>Play around:</strong> add 32 F and 0 F to the test values. Check the result against the formula in the Week 1 notes.</p>
+<p><strong>Reflection:</strong> Why is returning a value more reusable than printing the answer inside the function?</p>
+<p><strong>Answer:</strong> A returned value can be stored, formatted by the caller, passed to another calculation or tested. Printing only sends text to the console and does not provide a value for later work.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F01_unit_function.py" title="Python editor: a function with units" width="100%" height="600"></iframe>
+<!-- END TASK 1 -->
+
+<!-- START TASK 2: A slope-angle function -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: A slope-angle function</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> identify the two inputs, the output unit and the formula. The angle is <code>degrees(atan(abs(delta_height_m) / delta_east_m))</code>.</p>
+<p><strong>Instructions:</strong> complete <code>slope_angle(delta_height_m, delta_east_m)</code>. Return the absolute terrain angle in degrees. Use <code>atan()</code> and <code>degrees()</code>; do not use a calculator result as a hard-coded answer.</p>
+<p>Expected output:</p>
+<pre>Angle: 3.43 degrees
+Angle: 3.43 degrees</pre>
+<p><strong>Play around:</strong> test a flat route, a negative easting change and a steeper 20 m rise over 100 m. Explain what the absolute value changes.</p>
+<p><strong>Reflection:</strong> Why should the function return the same angle for a rise of 6 m and a fall of 6 m over the same horizontal distance?</p>
+<p><strong>Answer:</strong> The steepness magnitude is the size of the angle, not its direction. The sign of the height change tells whether the route rises or falls; <code>abs()</code> removes that direction for a steepness check.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F02_slope_function.py" title="Python editor: a slope-angle function" width="100%" height="600"></iframe>
+<!-- END TASK 2 -->
+
+<!-- START TASK 3: Parameters and defaults -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Parameters and defaults</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> write the cable-length relationship in words: route length, increased by sag, multiplied by the number of cables. Decide which values should be defaults.</p>
+<p><strong>Instructions:</strong> complete <code>total_cable_length(route_m, cable_count=6, sag_fraction=0.02)</code>. Return metres of cable. The default call should use six cables and 2% extra length; the second call changes only the cable count.</p>
+<p>Expected output:</p>
+<pre>Default case: 489.6 m
+Changed cables: 326.4 m</pre>
+<p><strong>Play around:</strong> change the route to 100 m, then call the function with a 5% sag fraction. Try keyword arguments in a different order.</p>
+<p><strong>Reflection:</strong> Why are defaults useful when most routes use the same cable count and sag allowance?</p>
+<p><strong>Answer:</strong> Defaults make the common call short and readable while still allowing a caller to override an assumption for a different design case.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F03_function_defaults.py" title="Python editor: parameters and defaults" width="100%" height="600"></iframe>
+<!-- END TASK 3 -->
+
+<!-- START TASK 4: Test a function -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Test a function</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> write the normal case, a boundary case and a changed-input case before running the program. An <code>assert</code> should state a fact that must remain true.</p>
+<p><strong>Instructions:</strong> complete <code>rectangle_area(length_m, width_m)</code>. Add assertions for a 5 m by 3 m rectangle, a zero-width rectangle and one additional case. Keep the displayed report in square metres.</p>
+<p>Expected output after the assertions pass:</p>
+<pre>Area: 15.0 m^2</pre>
+<p><strong>Play around:</strong> deliberately change the formula or an expected value and read the resulting <code>AssertionError</code>. Restore the correct test afterwards.</p>
+<p><strong>Reflection:</strong> Why should tests include more than the values used in the first worked example?</p>
+<p><strong>Answer:</strong> A single example can pass by accident or hide a boundary error. Different inputs test whether the function expresses the general rule rather than one hard-coded result.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F04_function_tests.py" title="Python editor: test a function" width="100%" height="600"></iframe>
+<!-- END TASK 4 -->
+
+<!-- START TASK 5: NumPy measurement arrays -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: NumPy measurement arrays</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> compare a Python list operation with an array operation. The same arithmetic should apply to every element without writing a loop.</p>
+<p><strong>Instructions:</strong> use the NumPy array already supplied. Print the mean altitude to two decimal places, the highest altitude to two decimal places, and the change from the first pole as an array.</p>
+<p>Expected output:</p>
+<pre>Mean altitude: 649.52 m
+Highest altitude: 670.45 m
+Change from first: [ 0.   11.05 22.1  28.4  41.55]</pre>
+<p><strong>Play around:</strong> append a measurement, change the first altitude and calculate the range with <code>np.max(values) - np.min(values)</code>.</p>
+<p><strong>Reflection:</strong> What does vectorised arithmetic do when an array is subtracted from one scalar value?</p>
+<p><strong>Answer:</strong> NumPy applies the operation element by element, so one scalar can be subtracted from every array entry without an explicit Python loop.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F05_numpy_measurements.py" title="Python editor: NumPy measurement arrays" width="100%" height="600"></iframe>
+<!-- END TASK 5 -->
+
+<!-- START TASK 6: NumPy masks -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: NumPy masks for limit checks</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> write the rule in words: select values strictly greater than the limit. Check what should happen to a value exactly equal to 20.0.</p>
+<p><strong>Instructions:</strong> create a Boolean mask for values above <code>limit_ms</code>, use it to select the values, and print the count, their mean and whether the original value at the limit was selected. Do not use a Python loop.</p>
+<p>Expected output:</p>
+<pre>Selected count: 2
+Selected mean: 27.8 m/s
+Value at limit selected: False</pre>
+<p><strong>Play around:</strong> change the limit to 18.0 and then to 31.0. Explain the empty-selection case before you run it.</p>
+<p><strong>Reflection:</strong> Why is <code>&gt;</code> different from <code>&gt;=</code> for an engineering alert threshold?</p>
+<p><strong>Answer:</strong> <code>&gt;</code> excludes a value exactly at the limit, while <code>&gt;=</code> includes it. The correct operator depends on the stated safety rule and must not be chosen by habit.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F06_numpy_mask.py" title="Python editor: NumPy masks" width="100%" height="600"></iframe>
+<!-- END TASK 6 -->
+
+<!-- START TASK 7: A terrain plot -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: A labelled terrain plot</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> identify the independent variable, dependent variable, units and the engineering message the chart should make visible.</p>
+<p><strong>Instructions:</strong> plot easting against altitude with markers. Add a useful title, axis labels including units and a light grid. Finish with <code>plt.show()</code>. The plot appears below the console after the first package load.</p>
+<p>Expected result: a five-point terrain profile rising from about 629 m to 670 m, with easting in metres on the horizontal axis and altitude in metres on the vertical axis.</p>
+<p><strong>Play around:</strong> add a second line for a smoothed or reference profile, or change one altitude and predict which part of the chart changes.</p>
+<p><strong>Reflection:</strong> Why are axis labels and units part of the engineering result rather than decoration?</p>
+<p><strong>Answer:</strong> A graph without units or clear variable names can be interpreted incorrectly. Labels communicate what was measured, how it is scaled and what conclusion the reader may draw.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F07_terrain_plot.py" title="Python editor: a labelled terrain plot" width="100%" height="600"></iframe>
+<!-- END TASK 7 -->
+
+<!-- START TASK 8: Integration checkpoint -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Integration checkpoint</h2>
+<hr>
+Difficulty: ★★★<p><br></p>
+<p><strong>Plan first (everyone):</strong> write the function contract, predict the three reports, and list the assertions you will use. Decide what an empty measurement set should return before coding.</p>
+<p><strong>Instructions:</strong> complete <code>measurement_report(readings, limit=13.0)</code>. Convert the input to a NumPy array, return a dictionary with <code>count</code>, <code>mean</code>, <code>peak</code> and <code>above</code>, and handle an empty input without dividing by zero. The over-limit count is strictly greater than the limit. Add assertions for the original, negative and empty cases.</p>
+<p>Expected reports for the starter data are equivalent to:</p>
+<pre>{'count': 5, 'mean': 12.76, 'peak': 14.2, 'above': 1}
+{'count': 3, 'mean': -5.0, 'peak': -2.0, 'above': 0}
+{'count': 0, 'mean': None, 'peak': None, 'above': 0}</pre>
+<p><strong>Play around:</strong> test a list containing zero and a value exactly at 13.0. Keep the returned dictionary stable so another program could use it.</p>
+<p><strong>Reflection:</strong> What makes this a reusable engineering tool rather than a one-off report?</p>
+<p><strong>Answer:</strong> It has a clear input/output contract, accepts changed data and a changed limit, handles an edge case, and includes tests. A caller can use the returned values without depending on the function's print formatting.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F08_checkpoint.py" title="Python editor: integration checkpoint" width="100%" height="600"></iframe>
+<!-- END TASK 8 -->

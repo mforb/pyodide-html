@@ -33,6 +33,7 @@ function appendRun(text, isError) {
 function clearConsole() {
   runCount = 0;
   document.getElementById('output').innerHTML = '';
+  document.getElementById('plots').innerHTML = '';
   document.getElementById('run-count').textContent = '';
 }
 
@@ -120,6 +121,7 @@ async function init() {
     editor.setTheme('ace/theme/chrome');
     editor.session.setMode('ace/mode/python');
     editor.setShowPrintMargin(false);
+    document.pyodideMplTarget = document.getElementById('plots');
     const source = codeSource(new URLSearchParams(location.search));
     status.textContent = 'Loading starter code...';
     starterCode = await loadStarter(source);
@@ -230,6 +232,7 @@ async function runPython() {
   runCount++;
   saveNow();
   const code = editor.getValue();
+  document.getElementById('plots').innerHTML = '';
   try {
     status.textContent = 'Checking libraries (first use can take a while)...';
     await pyodide.loadPackagesFromImports(code);
