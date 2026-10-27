@@ -17,7 +17,7 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 def check_materials():
     materials = {}
-    for class_number, count in ((2, 13), (3, 12), (4, 8)):
+    for class_number, count in ((2, 13), (3, 12), (4, 12)):
         html = (ROOT / f'moodle_class{class_number}.html').read_text()
         blocks = re.findall(r'<!-- START TASK (\d+):.*?<!-- END TASK \1 -->', html, re.S)
         assert blocks == [str(i) for i in range(1, count + 1)]
@@ -219,7 +219,7 @@ def main():
                 assert loaded == (ROOT / relative).read_text()
             assert not failures, failures
             browser.close()
-        print('PASS: 33 exercise blocks/starters, Class 2/3/4 previews, URL loading, autosave/reset, href/iframe integration, clean Python errors, prompts, timeout, packages and controls.')
+        print('PASS: 37 exercise blocks/starters, Class 2/3/4 previews, URL loading, autosave/reset, href/iframe integration, clean Python errors, prompts, timeout, packages and controls.')
     finally:
         server.shutdown()
         server.server_close()

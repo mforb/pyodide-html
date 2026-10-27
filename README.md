@@ -123,14 +123,38 @@ and `runner_link.js` on the GitHub Pages branch before using the new links.
 
 ## Class 4 Moodle blocks
 
-`moodle_class4.html` contains **8 copyable Moodle HTML blocks** for functions and
+`moodle_class4.html` contains **12 copyable Moodle HTML blocks** for functions and
 scientific Python. It uses the same heading, numbering, reflection answers and
 600px runner iframe format as Classes 2 and 3. The optional numbering header
 defaults to section **10**.
 
-Tasks 1–4 use functions and tests. Tasks 5–8 use NumPy arrays, masks and a
-matplotlib terrain plot; Task 8 is the required integration checkpoint. The
-matching starters are under `exercises/class4/`.
+Use **inputs → calculation → returned result**, then predict, run and compare.
+Tasks 1–8 are the core lesson; **Tasks 9–12 are optional**. The matching incomplete
+starters are under `exercises/class4/`.
+
+| Block | Exercise |
+| --- | --- |
+| 1 | Return a Celsius temperature from a Fahrenheit input |
+| 2 | Return a 2D distance using Pythagoras |
+| 3 | Signal travel distance with a default speed and keyword arguments |
+| 4 | Check the distance function, including zero and negative differences |
+| 5 | Sort toy satellites by supplied azimuth, then calculate array distances |
+| 6 | Select distances at or below a limit with a Boolean mask |
+| 7 | Label a step plot and estimate a chip duration |
+| 8 | Required checkpoint: reusable distance-array filter with checks |
+| 9 | Optional 2D positioning: compare three candidate locations |
+| 10 | Optional ground-projected speed at different circular-orbit heights |
+| 11 | Optional seven-chip code matching against a shifted register |
+| 12 | Optional two-component velocity update towards circular-orbit speed |
+
+The small 2D coordinates and slow chip timing are teaching models. Orbit speed
+uses a spherical, non-rotating Earth; the velocity update is an impulse
+approximation, not a full orbital transfer simulation. The first work block uses
+Tasks 1–4; the second uses Tasks 5–8 before any optional task.
+
+Task 2 now links to `02_distance_function.py` and Task 7 to `07_chip_plot.py`.
+Replace the existing Class 4 Moodle blocks when publishing this revision so their
+instructions and iframe links match the new starters.
 
 Publish `moodle_class4.html` and `exercises/class4/` with the runner files before
 using the links in Moodle. The link runner includes a plot target so a student's

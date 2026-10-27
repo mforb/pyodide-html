@@ -1,9 +1,10 @@
-# Task 3: use parameters and defaults in a cable-length function.
+# Task 3: distance = speed * one-way travel time.
+# Use a rounded light speed of 300 km/ms by default.
 
-def total_cable_length(route_m, cable_count=6, sag_fraction=0.02):
-    # Return the total cable length in metres.
+def signal_range(travel_ms, speed_km_ms=300.0):
+    # Return distance in kilometres.
     pass
 
 
-print(f"Default case: {total_cable_length(80.0):.1f} m")
-print(f"Changed cables: {total_cable_length(80.0, cable_count=4):.1f} m")
+print(f"Default speed: {signal_range(70.0):.1f} km")
+print(f"Changed speed: {signal_range(70.0, speed_km_ms=299.8):.1f} km")

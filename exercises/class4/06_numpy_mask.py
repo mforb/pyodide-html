@@ -1,9 +1,11 @@
-# Task 6: select engineering data with a NumPy mask.
+# Task 6: keep ranges at or below a limit (including the boundary).
 import numpy as np
 
-wind_speed_ms = np.array([12.0, 20.0, 24.5, 18.0, 31.0, 20.0])
-limit_ms = 20.0
+# Data are already in the angle order found in Task 5.
+satellite = np.array(["C", "A", "D", "B"])
+ranges_km = np.array([6.0, 5.0, 10.0, 5.0])
+limit_km = 6.0
 
-# Select only values strictly above the limit.
-# Print the number selected, their mean to one decimal place,
-# and whether the original value at the limit was selected.
+# TODO: mask = a comparison between ranges_km and limit_km.
+# Select names with satellite[mask] and distances with ranges_km[mask].
+# Print names, distances, number selected and mask[0] (the 6 km case).

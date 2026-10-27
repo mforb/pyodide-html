@@ -1,4 +1,5 @@
-# Task 1: write a function with a clear unit contract.
+# Task 1: inputs -> calculation -> returned result.
+# Celsius = (Fahrenheit - 32) * 5 / 9.
 
 def celsius_from_fahrenheit(fahrenheit_f):
     # Return the temperature in degrees Celsius.

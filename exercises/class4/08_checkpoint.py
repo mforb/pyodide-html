@@ -1,17 +1,22 @@
-# Task 8: integration checkpoint: function, NumPy and evidence of testing.
+# Task 8: one reusable function combining arrays and a mask.
 import numpy as np
 
 
-def measurement_report(readings, limit=13.0):
-    """Return count, mean, peak and strict over-limit count."""
-    values = np.asarray(readings, dtype=float)
-    # Handle an empty array, then calculate the report with NumPy.
+def ranges_within(dx_km, dy_km, limit_km=6.0):
+    """Return 2D ranges at or below the limit, in kilometres."""
+    # Assume two equally sized 1D lists of numbers; empty lists are allowed.
+    dx_km = np.asarray(dx_km, dtype=float)
+    dy_km = np.asarray(dy_km, dtype=float)
+    # TODO: calculate the ranges, make a mask, then return selected ranges.
     pass
 
 
-for data in ([12.1, 11.8, 14.2, 13.0, 12.7],
-             [-5.0, -2.0, -8.0],
-             []):
-    print(measurement_report(data))
+dx = [3.0, -3.0, 0.0, 8.0]
+dy = [4.0, 4.0, 6.0, 6.0]
+print("Default limit:", ranges_within(dx, dy))
+print("Changed limit:", ranges_within(dx, dy, limit_km=5.0))
+print("Empty input:", ranges_within([], []))
 
-# Add assertions for the original, negative and empty cases.
+# Add assertions: expected distances, exactly at the limit,
+# negative coordinate differences, zero distance, and empty input.
+# np.allclose(actual, expected) compares numeric arrays with a tolerance.

@@ -1,13 +1,13 @@
 <!--
-MG5001 Python Class 4: Functions and scientific Python - 8 Moodle text blocks.
+MG5001 Python Class 4: Functions and scientific Python.
+8 core tasks + 4 optional GNSS-inspired extensions.
 
 Copy each START TASK ... END TASK block into a separate Moodle text/HTML area.
-The optional numbering header below is copied once, only if section/number are
-not already initialised. Default section 10 follows Class 3's section 9.
-
-Tasks 1-4: functions and testing. Tasks 5-7: NumPy and plotting.
-Task 8: everyone's integration checkpoint.
-Working pattern: specify -> write a function -> test -> interpret.
+Copy the optional numbering header once only; section 10 follows Class 3's 9.
+Tasks 1-4: functions and checks. Tasks 5-8: arrays, selection and plotting.
+Everyone completes Task 8 before optional Tasks 9-12.
+Working pattern: inputs -> calculation -> returned result; predict, run, compare.
+Small 2D distances and slow chip timing are teaching models, not GPS-scale data.
 -->
 <script>
     var section = 10;
@@ -23,38 +23,38 @@ Working pattern: specify -> write a function -> test -> interpret.
     </span>: A function with units</h2>
 <hr>
 Difficulty: ★☆☆<p><br></p>
-<p><strong>Plan first:</strong> write the function contract: input is a Fahrenheit temperature in degrees F, output is a Celsius temperature in degrees C. List the three test values before coding.</p>
-<p><strong>Instructions:</strong> complete <code>celsius_from_fahrenheit(fahrenheit_f)</code>. Return the converted value rather than printing inside the function. Keep the unit-bearing parameter name and use the function for all three supplied values.</p>
+<p><strong>Plan first:</strong> what goes in, and what comes back? Input: temperature in degrees Fahrenheit. Result: temperature in degrees Celsius. Use <code>(fahrenheit_f - 32) * 5 / 9</code>.</p>
+<p><strong>Instructions:</strong> complete <code>celsius_from_fahrenheit(fahrenheit_f)</code> with a <code>return</code>. The supplied loop calls it three times and prints each result. Keep the calculation inside the function and the printing outside it.</p>
 <p>Expected output:</p>
 <pre>98.6 F -&gt; 37.0 C
 212.0 F -&gt; 100.0 C
 -40.0 F -&gt; -40.0 C</pre>
-<p><strong>Play around:</strong> add 32 F and 0 F to the test values. Check the result against the formula in the Week 1 notes.</p>
-<p><strong>Reflection:</strong> Why is returning a value more reusable than printing the answer inside the function?</p>
-<p><strong>Answer:</strong> A returned value can be stored, formatted by the caller, passed to another calculation or tested. Printing only sends text to the console and does not provide a value for later work.</p>
+<p><strong>Play around:</strong> add 32 F and 0 F. Store one returned value in a variable before printing it.</p>
+<p><strong>Reflection:</strong> Why return the answer rather than only printing it inside the function?</p>
+<p><strong>Answer:</strong> A returned number can be stored, tested or used in another calculation. <code>print()</code> displays text; it does not return the calculated number.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F01_unit_function.py" title="Python editor: a function with units" width="100%" height="600"></iframe>
 <!-- END TASK 1 -->
 
-<!-- START TASK 2: A slope-angle function -->
+<!-- START TASK 2: Distance in two dimensions -->
 <h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
         <script>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: A slope-angle function</h2>
+    </span>: Distance in two dimensions</h2>
 <hr>
-Difficulty: ★★☆<p><br></p>
-<p><strong>Plan first:</strong> identify the two inputs, the output unit and the formula. The angle is <code>degrees(atan(abs(delta_height_m) / delta_east_m))</code>.</p>
-<p><strong>Instructions:</strong> complete <code>slope_angle(delta_height_m, delta_east_m)</code>. Return the absolute terrain angle in degrees. Use <code>atan()</code> and <code>degrees()</code>; do not use a calculator result as a hard-coded answer.</p>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Plan first:</strong> draw a right triangle with sides 3 km and 4 km. Predict its diagonal length. The inputs are coordinate differences <code>dx_km</code> and <code>dy_km</code>; the result is a distance in kilometres.</p>
+<p><strong>Instructions:</strong> complete <code>range_2d(dx_km, dy_km)</code> using <code>(dx_km ** 2 + dy_km ** 2) ** 0.5</code>. In Python, <code>**</code> raises a number to a power. Return the answer. This is a flat 2D model inspired by satellite ranging.</p>
 <p>Expected output:</p>
-<pre>Angle: 3.43 degrees
-Angle: 3.43 degrees</pre>
-<p><strong>Play around:</strong> test a flat route, a negative easting change and a steeper 20 m rise over 100 m. Explain what the absolute value changes.</p>
-<p><strong>Reflection:</strong> Why should the function return the same angle for a rise of 6 m and a fall of 6 m over the same horizontal distance?</p>
-<p><strong>Answer:</strong> The steepness magnitude is the size of the angle, not its direction. The sign of the height change tells whether the route rises or falls; <code>abs()</code> removes that direction for a steepness check.</p>
+<pre>Range: 5.0 km
+Range: 5.0 km</pre>
+<p><strong>Play around:</strong> try <code>(0, 0)</code>, <code>(0, 6)</code> and <code>(6, 8)</code>. Change the sign of either coordinate difference.</p>
+<p><strong>Reflection:</strong> Why do <code>(3, 4)</code> and <code>(-3, 4)</code> give the same distance?</p>
+<p><strong>Answer:</strong> The sign changes direction. Squaring the coordinate differences removes their signs, so both triangles have the same side lengths and diagonal.</p>
 <p><br></p>
-<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F02_slope_function.py" title="Python editor: a slope-angle function" width="100%" height="600"></iframe>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F02_distance_function.py" title="Python editor: distance in two dimensions" width="100%" height="600"></iframe>
 <!-- END TASK 2 -->
 
 <!-- START TASK 3: Parameters and defaults -->
@@ -63,102 +63,105 @@ Angle: 3.43 degrees</pre>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: Parameters and defaults</h2>
+    </span>: Signal travel time and a default speed</h2>
 <hr>
-Difficulty: ★★☆<p><br></p>
-<p><strong>Plan first:</strong> write the cable-length relationship in words: route length, increased by sag, multiplied by the number of cables. Decide which values should be defaults.</p>
-<p><strong>Instructions:</strong> complete <code>total_cable_length(route_m, cable_count=6, sag_fraction=0.02)</code>. Return metres of cable. The default call should use six cables and 2% extra length; the second call changes only the cable count.</p>
+Difficulty: ★☆☆<p><br></p>
+<p><strong>Plan first:</strong> distance = speed × time. Time is in milliseconds (ms), speed in km/ms, and distance in km. Assume the one-way travel time is already known.</p>
+<p><strong>Instructions:</strong> complete <code>signal_range(travel_ms, speed_km_ms=300.0)</code>. Return speed multiplied by time. The first call uses a rounded light speed of 300 km/ms; the second overrides it using a keyword argument. This is one-way travel, so do not divide by two.</p>
 <p>Expected output:</p>
-<pre>Default case: 489.6 m
-Changed cables: 326.4 m</pre>
-<p><strong>Play around:</strong> change the route to 100 m, then call the function with a 5% sag fraction. Try keyword arguments in a different order.</p>
-<p><strong>Reflection:</strong> Why are defaults useful when most routes use the same cable count and sag allowance?</p>
-<p><strong>Answer:</strong> Defaults make the common call short and readable while still allowing a caller to override an assumption for a different design case.</p>
+<pre>Default speed: 21000.0 km
+Changed speed: 20986.0 km</pre>
+<p><strong>Play around:</strong> try 0 ms and 80 ms. Call <code>signal_range(speed_km_ms=299.8, travel_ms=70.0)</code>. Real GNSS also has to account for clock errors; they are outside this calculation.</p>
+<p><strong>Reflection:</strong> What happens when the caller leaves out <code>speed_km_ms</code>?</p>
+<p><strong>Answer:</strong> Python uses 300.0, the default written in the function definition. Naming an argument lets the caller change that value explicitly.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F03_function_defaults.py" title="Python editor: parameters and defaults" width="100%" height="600"></iframe>
 <!-- END TASK 3 -->
 
-<!-- START TASK 4: Test a function -->
+<!-- START TASK 4: Check a function -->
 <h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
         <script>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: Test a function</h2>
+    </span>: Check your distance function</h2>
 <hr>
 Difficulty: ★★☆<p><br></p>
-<p><strong>Plan first:</strong> write the normal case, a boundary case and a changed-input case before running the program. An <code>assert</code> should state a fact that must remain true.</p>
-<p><strong>Instructions:</strong> complete <code>rectangle_area(length_m, width_m)</code>. Add assertions for a 5 m by 3 m rectangle, a zero-width rectangle and one additional case. Keep the displayed report in square metres.</p>
-<p>Expected output after the assertions pass:</p>
-<pre>Area: 15.0 m^2</pre>
-<p><strong>Play around:</strong> deliberately change the formula or an expected value and read the resulting <code>AssertionError</code>. Restore the correct test afterwards.</p>
-<p><strong>Reflection:</strong> Why should tests include more than the values used in the first worked example?</p>
-<p><strong>Answer:</strong> A single example can pass by accident or hide a boundary error. Different inputs test whether the function expresses the general rule rather than one hard-coded result.</p>
+<p><strong>Plan first:</strong> write down the answers for <code>(3, 4)</code>, <code>(0, 0)</code>, <code>(-3, 4)</code> and <code>(6, 8)</code>. They should be 5, 0, 5 and 10 km.</p>
+<p><strong>Instructions:</strong> copy your working function from Task 2. One <code>assert</code> is supplied; add three more. An assertion checks that a condition is true and raises <code>AssertionError</code> if it is false. Use <code>abs(actual - expected) &lt; 1e-9</code> to allow tiny floating-point differences.</p>
+<p>Expected output after all four checks pass:</p>
+<pre>Distance checks passed</pre>
+<p><strong>Play around:</strong> change one expected answer to an incorrect value. Read the error, then restore the correct check.</p>
+<p><strong>Reflection:</strong> Why include zero and negative coordinate differences?</p>
+<p><strong>Answer:</strong> They check that the function handles coincident points and different directions, rather than working only for the first positive example.</p>
 <p><br></p>
-<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F04_function_tests.py" title="Python editor: test a function" width="100%" height="600"></iframe>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F04_function_tests.py" title="Python editor: check a function" width="100%" height="600"></iframe>
 <!-- END TASK 4 -->
 
-<!-- START TASK 5: NumPy measurement arrays -->
+<!-- START TASK 5: Satellite arrays in angle order -->
 <h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
         <script>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: NumPy measurement arrays</h2>
+    </span>: Satellite arrays in angle order</h2>
 <hr>
 Difficulty: ★★☆<p><br></p>
-<p><strong>Plan first:</strong> compare a Python list operation with an array operation. The same arithmetic should apply to every element without writing a loop.</p>
-<p><strong>Instructions:</strong> use the NumPy array already supplied. Print the mean altitude to two decimal places, the highest altitude to two decimal places, and the change from the first pole as an array.</p>
-<p>Expected output:</p>
-<pre>Mean altitude: 649.52 m
-Highest altitude: 670.45 m
-Change from first: [ 0.   11.05 22.1  28.4  41.55]</pre>
-<p><strong>Play around:</strong> append a measurement, change the first altitude and calculate the range with <code>np.max(values) - np.min(values)</code>.</p>
-<p><strong>Reflection:</strong> What does vectorised arithmetic do when an array is subtracted from one scalar value?</p>
-<p><strong>Answer:</strong> NumPy applies the operation element by element, so one scalar can be subtracted from every array entry without an explicit Python loop.</p>
+<p><strong>Plan first:</strong> azimuth is a horizontal angle measured clockwise from north: north is 0°, east is 90°. Put the supplied angles in ascending order and predict the order of satellite names. These are small, idealised 2D coordinates, with the receiver at (0, 0).</p>
+<p><strong>Instructions:</strong> read the supplied sorting step. <code>np.argsort()</code> gives row indices; applying the same <code>order</code> to every array keeps each satellite's name, angle and coordinates together. After sorting, calculate <code>ranges_km = np.sqrt(dx_km ** 2 + dy_km ** 2)</code>. Print the arrays and use <code>np.mean(ranges_km)</code> for the mean. No Python loop is needed.</p>
+<p>Expected output (array spacing may differ):</p>
+<pre>Satellites: ['C' 'A' 'D' 'B']
+Angles (deg): [  0.   36.9  53.1 323.1]
+Ranges (km): [ 6.  5. 10.  5.]
+Mean range: 6.50 km</pre>
+<p><strong>Play around:</strong> change D's eastward difference from 8 to 6 km and recompute its range. Its new azimuth is 45°, so update that value too. Sorting organises the rows; it does not calculate a receiver position.</p>
+<p><strong>Reflection:</strong> What goes wrong if you sort only the angles?</p>
+<p><strong>Answer:</strong> The angles become attached to the wrong names and coordinates. Applying the same indices to every array preserves each record.</p>
 <p><br></p>
-<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F05_numpy_measurements.py" title="Python editor: NumPy measurement arrays" width="100%" height="600"></iframe>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F05_numpy_measurements.py" title="Python editor: satellite arrays in angle order" width="100%" height="600"></iframe>
 <!-- END TASK 5 -->
 
-<!-- START TASK 6: NumPy masks -->
+<!-- START TASK 6: Select ranges with a mask -->
 <h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
         <script>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: NumPy masks for limit checks</h2>
+    </span>: Select ranges with a mask</h2>
 <hr>
 Difficulty: ★★☆<p><br></p>
-<p><strong>Plan first:</strong> write the rule in words: select values strictly greater than the limit. Check what should happen to a value exactly equal to 20.0.</p>
-<p><strong>Instructions:</strong> create a Boolean mask for values above <code>limit_ms</code>, use it to select the values, and print the count, their mean and whether the original value at the limit was selected. Do not use a Python loop.</p>
+<p><strong>Plan first:</strong> select distances <em>at or below</em> 6 km. Predict the four True/False values. The first distance is exactly 6 km and should be included. This is an array-selection exercise, not a real GNSS visibility rule.</p>
+<p><strong>Instructions:</strong> create <code>mask = ranges_km &lt;= limit_km</code>. Use it to select names and distances. Print both selected arrays, <code>len(selected)</code> for the count, and <code>mask[0]</code> to check the boundary.</p>
 <p>Expected output:</p>
-<pre>Selected count: 2
-Selected mean: 27.8 m/s
-Value at limit selected: False</pre>
-<p><strong>Play around:</strong> change the limit to 18.0 and then to 31.0. Explain the empty-selection case before you run it.</p>
-<p><strong>Reflection:</strong> Why is <code>&gt;</code> different from <code>&gt;=</code> for an engineering alert threshold?</p>
-<p><strong>Answer:</strong> <code>&gt;</code> excludes a value exactly at the limit, while <code>&gt;=</code> includes it. The correct operator depends on the stated safety rule and must not be chosen by habit.</p>
+<pre>Selected satellites: ['C' 'A' 'B']
+Selected ranges (km): [6. 5. 5.]
+Selected count: 3
+Value at limit selected: True</pre>
+<p><strong>Play around:</strong> change the limit to 5 km and then 4 km. The selected counts should be 2 and 0. An empty selection is an empty array.</p>
+<p><strong>Reflection:</strong> Why use <code>&lt;=</code> instead of <code>&lt;</code>?</p>
+<p><strong>Answer:</strong> “At or below” includes a distance exactly equal to the limit. <code>&lt;</code> would exclude that boundary value.</p>
 <p><br></p>
-<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F06_numpy_mask.py" title="Python editor: NumPy masks" width="100%" height="600"></iframe>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F06_numpy_mask.py" title="Python editor: select ranges with a mask" width="100%" height="600"></iframe>
 <!-- END TASK 6 -->
 
-<!-- START TASK 7: A terrain plot -->
+<!-- START TASK 7: Find a chip duration from a plot -->
 <h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
         <script>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: A labelled terrain plot</h2>
+    </span>: Find a chip duration from a plot</h2>
 <hr>
 Difficulty: ★★☆<p><br></p>
-<p><strong>Plan first:</strong> identify the independent variable, dependent variable, units and the engineering message the chart should make visible.</p>
-<p><strong>Instructions:</strong> plot easting against altitude with markers. Add a useful title, axis labels including units and a light grid. Finish with <code>plt.show()</code>. The plot appears below the console after the first package load.</p>
-<p>Expected result: a five-point terrain profile rising from about 629 m to 670 m, with easting in metres on the horizontal axis and altitude in metres on the vertical axis.</p>
-<p><strong>Play around:</strong> add a second line for a smoothed or reference profile, or change one altitude and predict which part of the chart changes.</p>
-<p><strong>Reflection:</strong> Why are axis labels and units part of the engineering result rather than decoration?</p>
-<p><strong>Answer:</strong> A graph without units or clear variable names can be interpreted incorrectly. Labels communicate what was measured, how it is scaled and what conclusion the reader may draw.</p>
+<p><strong>Plan first:</strong> a chip is one timed element of a spreading code, shown here as +1 or −1. Every chip has the same duration, but neighbouring chips may have the same sign. The sample interval is 0.5 ms; that is not necessarily the chip duration.</p>
+<p><strong>Instructions:</strong> complete the supplied step plot with a title, <code>plt.xlabel("Time (ms)")</code>, <code>plt.ylabel("Code level (unitless)")</code>, <code>plt.grid(alpha=0.3)</code> and <code>plt.show()</code>. Read the times where the sign changes. Estimate one chip's duration from the shortest gap between changes and print your estimate. This clean example contains one-chip runs.</p>
+<p>The plot appears below the console. The first matplotlib run may take longer while it initialises. If that first run ends with <code>RunTimeout</code>, run the same code once more. The supplied <code>plt.figure()</code> starts a fresh plot each time.</p>
+<p>Expected result: a labelled step plot from 0 to 8 ms, levels −1 and +1, with changes at 1, 3, 4, 5 and 7 ms. The shortest gap is <strong>1 ms</strong>, so the estimated chip duration is 1 ms. This signal is deliberately much slower than a real GNSS spreading code.</p>
+<p><strong>Play around:</strong> double all time values. Predict the chip duration before running again. Explain why the flat section from 1 to 3 ms can contain two chips.</p>
+<p><strong>Reflection:</strong> Can every flat section be treated as exactly one chip?</p>
+<p><strong>Answer:</strong> No. Consecutive chips with the same sign merge into one flat section. The shortest visible gap works for this constructed example because a one-chip run is present; it is not a general estimator for noisy or arbitrary signals.</p>
 <p><br></p>
-<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F07_terrain_plot.py" title="Python editor: a labelled terrain plot" width="100%" height="600"></iframe>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F07_chip_plot.py" title="Python editor: a labelled chip plot" width="100%" height="600"></iframe>
 <!-- END TASK 7 -->
 
 <!-- START TASK 8: Integration checkpoint -->
@@ -167,18 +170,111 @@ Difficulty: ★★☆<p><br></p>
             number++
             document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
         </script>
-    </span>: Integration checkpoint</h2>
+    </span>: Integration checkpoint — a reusable range filter</h2>
 <hr>
-Difficulty: ★★★<p><br></p>
-<p><strong>Plan first (everyone):</strong> write the function contract, predict the three reports, and list the assertions you will use. Decide what an empty measurement set should return before coding.</p>
-<p><strong>Instructions:</strong> complete <code>measurement_report(readings, limit=13.0)</code>. Convert the input to a NumPy array, return a dictionary with <code>count</code>, <code>mean</code>, <code>peak</code> and <code>above</code>, and handle an empty input without dividing by zero. The over-limit count is strictly greater than the limit. Add assertions for the original, negative and empty cases.</p>
-<p>Expected reports for the starter data are equivalent to:</p>
-<pre>{'count': 5, 'mean': 12.76, 'peak': 14.2, 'above': 1}
-{'count': 3, 'mean': -5.0, 'peak': -2.0, 'above': 0}
-{'count': 0, 'mean': None, 'peak': None, 'above': 0}</pre>
-<p><strong>Play around:</strong> test a list containing zero and a value exactly at 13.0. Keep the returned dictionary stable so another program could use it.</p>
-<p><strong>Reflection:</strong> What makes this a reusable engineering tool rather than a one-off report?</p>
-<p><strong>Answer:</strong> It has a clear input/output contract, accepts changed data and a changed limit, handles an edge case, and includes tests. A caller can use the returned values without depending on the function's print formatting.</p>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first (everyone):</strong> explain the inputs and result in one sentence. Two equally sized 1D lists hold coordinate differences in km; the function returns the distances at or below a chosen limit. Empty lists should give an empty array.</p>
+<p><strong>Instructions:</strong> complete <code>ranges_within(dx_km, dy_km, limit_km=6.0)</code>. The starter converts lists to arrays using <code>np.asarray()</code>. Add the distance calculation, a Boolean mask and a <code>return</code>. Use array operations. Printing stays outside the function. There is no need for a dictionary or a separate empty-input branch.</p>
+<p>Expected output:</p>
+<pre>Default limit: [5. 5. 6.]
+Changed limit: [5. 5.]
+Empty input: []</pre>
+<p>Add checks for the original distances, a changed limit, exactly 6 km, a negative coordinate difference, zero distance and empty input. For example, <code>assert np.allclose(ranges_within([3], [4]), [5])</code> checks numeric arrays with a tolerance. Use <code>assert len(ranges_within([], [])) == 0</code> for the empty case.</p>
+<p><strong>Play around:</strong> try a 4 km limit. Explain why there are no selected distances. Submit your function, check results, the labelled Task 7 plot and a sentence interpreting each result before optional Tasks 9–12.</p>
+<p><strong>Reflection:</strong> What makes this more useful than a calculation for one fixed dataset?</p>
+<p><strong>Answer:</strong> The caller can change both the coordinates and the limit, and receives an array that can be used again. The same function works for different directions, boundary values and empty lists.</p>
 <p><br></p>
 <iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F08_checkpoint.py" title="Python editor: integration checkpoint" width="100%" height="600"></iframe>
 <!-- END TASK 8 -->
+
+<!-- START TASK 9: Optional 2D positioning -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Optional — which 2D position fits?</h2>
+<hr>
+Difficulty: ★★★<p><br></p>
+<p><strong>Plan first:</strong> a measured distance places the receiver on a circle around a known satellite or beacon. Finding a position from distances is <em>trilateration</em>; triangulation uses angles. Use this flat 2D model with exact ranges and synchronised clocks.</p>
+<p><strong>Instructions:</strong> complete <code>range_error(x_km, y_km)</code>. Coordinate differences are supplied. Calculate the three predicted ranges, then return <code>np.sum(np.abs(predicted_km - measured_km))</code>. The supplied loop tries three candidate positions. Identify the candidate with the smallest total range error. Keep the three fixed beacon arrays supplied above the function.</p>
+<p>Expected output:</p>
+<pre>(2, 4) km: error 1.864 km
+(3, 4) km: error 0.000 km
+(4, 4) km: error 2.060 km</pre>
+<p><strong>Play around:</strong> add another candidate or add 0.1 km to one measured range. Does any candidate still fit exactly? This task compares guesses; it does not implement a general position solver.</p>
+<p><strong>Reflection:</strong> Does sorting the satellites by horizontal angle find the receiver's position?</p>
+<p><strong>Answer:</strong> No. Sorting only organises the records. Position estimation compares predicted distances with measured distances. Real GNSS also solves for receiver clock error and uses 3D geometry.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F09_position_candidates.py" title="Python editor: optional 2D positioning" width="100%" height="600"></iframe>
+<!-- END TASK 9 -->
+
+<!-- START TASK 10: Optional orbit speeds -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Optional — ground speed at different orbit heights</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> orbital speed is the satellite's speed along its orbit. Here “ground speed” means the speed of the point directly below it on a spherical, <strong>non-rotating</strong> Earth. Use a circular equatorial orbit and ignore the atmosphere.</p>
+<p><strong>Instructions:</strong> the starter calculates orbital radius <code>r = R + height</code> and orbital speed <code>v = sqrt(MU / r)</code>. Complete the returned ground speed using <code>v * R / r</code>. All lengths are km and all speeds are km/s. The constants and calls are supplied.</p>
+<p>Expected output:</p>
+<pre>400 km altitude: 7.219 km/s
+20200 km altitude: 0.929 km/s
+35786 km altitude: 0.465 km/s</pre>
+<p><strong>Play around:</strong> add a 1000 km altitude. For a prograde equatorial orbit on a rotating Earth, the speed relative to the surface would be <code>abs(ground_speed(height) - 2 * np.pi * 6371 / 86164)</code>. The 35786 km case is then close to zero; it is not zero in our non-rotating model.</p>
+<p><strong>Reflection:</strong> Why is the ground-projected speed smaller than the orbital speed?</p>
+<p><strong>Answer:</strong> The two points sweep through the same angle per second, but the point on Earth travels around a smaller circle. Multiplying by <code>R / r</code> accounts for that smaller radius.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F10_orbit_speeds.py" title="Python editor: optional orbit speeds" width="100%" height="600"></iframe>
+<!-- END TASK 10 -->
+
+<!-- START TASK 11: Optional code matching -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Optional — match a code against a register</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> the register holds seven known chips, each +1 or −1. Matching signs multiply to +1; different signs multiply to −1. The best alignment gives the largest sum.</p>
+<p><strong>Instructions:</strong> complete <code>match_score(received, trial)</code> by returning <code>np.sum(received * trial)</code>. The supplied loop uses <code>np.roll(register, shift)</code> to try each circular shift to the right. Read the highest score and its shift. This is a simplified code-phase acquisition search with one sample per chip, no noise and no frequency offset.</p>
+<p>Expected output:</p>
+<pre>Shift 0: score -1
+Shift 1: score -1
+Shift 2: score 7
+Shift 3: score -1
+Shift 4: score -1
+Shift 5: score -1
+Shift 6: score -1</pre>
+<p><strong>Play around:</strong> flip one sign in <code>received</code>. Does shift 2 still win? Its score should fall to 5. This array is a stored code register, not a feedback shift-register generator.</p>
+<p><strong>Reflection:</strong> What does a score of 7 mean for a seven-chip code?</p>
+<p><strong>Answer:</strong> All seven chip signs match at that circular shift. Each matching pair contributes +1, so the total is 7.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F11_code_match.py" title="Python editor: optional code matching" width="100%" height="600"></iframe>
+<!-- END TASK 11 -->
+
+<!-- START TASK 12: Optional 2D velocity change -->
+<h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" width="100" height="100" class="img-fluid atto_image_button_text-bottom">&nbsp;<span>
+        <script>
+            number++
+            document.currentScript.parentNode.innerHTML += `Task ${section}.${number}`
+        </script>
+    </span>: Optional — a small push towards circular-orbit speed</h2>
+<hr>
+Difficulty: ★★☆<p><br></p>
+<p><strong>Plan first:</strong> in a 2D cross-section, a satellite at 400 km altitude is moving tangentially at 7.4 km/s. It needs about 7.673 km/s for a circular orbit at that radius. Represent velocity as <code>[vx, vy]</code>, with +x outward and +y tangential at this position.</p>
+<p><strong>Instructions:</strong> complete <code>velocity_after(velocity, acceleration, seconds)</code> using <code>velocity + acceleration * seconds</code>. The target and required acceleration are supplied. Use this as an instantaneous impulse approximation: the 10 s value converts acceleration to a velocity change while position is treated as fixed.</p>
+<p>Expected output:</p>
+<pre>Before: 7.400 km/s tangential
+Target: 7.673 km/s tangential
+After: 7.673 km/s tangential</pre>
+<p><strong>Play around:</strong> replace the supplied acceleration with <code>np.array([0.02, 0.0])</code>, then print both components. Does an outward push produce the required tangential velocity? A real transfer must also model changing position, gravity and possibly further burns.</p>
+<p><strong>Reflection:</strong> Why is a speed alone not enough to specify the required burn?</p>
+<p><strong>Answer:</strong> Velocity has direction as well as magnitude. An outward push changes the radial component; the target here requires a tangential change with zero radial velocity.</p>
+<p><br></p>
+<iframe src="https://mforb.github.io/pyodide-html/runner_link.html?file=exercises%2Fclass4%2F12_velocity_change.py" title="Python editor: optional 2D velocity change" width="100%" height="600"></iframe>
+<!-- END TASK 12 -->

@@ -1,9 +1,10 @@
-# Task 4: write and test a small engineering function.
+# Task 4: check your distance function with known answers.
 
-def rectangle_area(length_m, width_m):
-    # Return area in square metres.
+def range_2d(dx_km, dy_km):
+    # Copy your working function body from Task 2.
     pass
 
 
-# Add assertions for the normal, zero-width and changed-input cases.
-print(f"Area: {rectangle_area(5.0, 3.0):.1f} m^2")
+# One check is supplied. Add checks for (0, 0), (-3, 4) and (6, 8).
+assert abs(range_2d(3, 4) - 5.0) < 1e-9
+print("Distance checks passed")
